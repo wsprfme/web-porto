@@ -49,6 +49,8 @@ function SectionHead({
 export default function Portfolio() {
   const [lang, setLang] = useState<Lang>(getInitialLang);
   const [progress, setProgress] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState("top");
   const [name, setName] = useState("");
   const [msg, setMsg] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -69,10 +71,28 @@ export default function Portfolio() {
       const h = document.documentElement;
       const max = h.scrollHeight - h.clientHeight;
       setProgress(max > 0 ? (h.scrollTop / max) * 100 : 0);
+      setScrolled(h.scrollTop > 12);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const ids = ["top", "about", "skills", "experience", "projects", "achievement", "contact"];
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) setActive(e.target.id);
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
   }, []);
 
   const toggleLang = () => {
@@ -104,75 +124,113 @@ export default function Portfolio() {
       </div>
 
       {/* NAVBAR */}
-      <header className="fixed top-[2px] left-0 right-0 z-50 border-b border-zinc-200 bg-white/90 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-          <a href="#top" className="flex items-center gap-3">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-950 text-xs font-bold text-white">
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "border-b border-zinc-200/80 bg-white/85 shadow-[0_12px_40px_-24px_rgba(0,0,0,0.35)] backdrop-blur-xl"
+            : "border-b border-transparent bg-white/70 backdrop-blur-md"
+        }`}
+      >
+        <div className="mx-auto flex h-[68px] max-w-6xl items-center justify-between gap-6 px-6">
+          <a href="#top" className="group flex shrink-0 items-center gap-2.5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-950 text-[11px] font-bold tracking-wide text-white transition group-hover:scale-105">
               {profile.initials}
             </span>
-            <span className="leading-tight">
-              <span className="block text-sm font-semibold tracking-tight">{profile.name}</span>
-              <span className="block text-xs text-zinc-500">{profile.role[lang]}</span>
+            <span className="hidden text-[15px] font-semibold tracking-tight sm:block">
+              {profile.name}
             </span>
           </a>
 
-          <nav className="hidden items-center gap-1 lg:flex">
+          <nav className="hidden items-center gap-0.5 rounded-full border border-zinc-200/70 bg-white/70 p-1 lg:flex">
             {sections.map((s) => (
               <a
                 key={s.id}
                 href={`#${s.id}`}
-                className="rounded-full px-3 py-2 text-sm text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-950"
+                className={`rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-all duration-200 ${
+                  active === s.id
+                    ? "bg-zinc-950 text-white"
+                    : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950"
+                }`}
               >
                 {s.label}
               </a>
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1">
             <button
               onClick={toggleLang}
-              className="rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-semibold tracking-wide transition hover:border-zinc-950"
+              className="flex items-center gap-1.5 rounded-full px-2.5 py-2 text-xs font-semibold text-zinc-500 transition hover:text-zinc-950"
               aria-label="Toggle language"
-              title="ID / EN"
+              title={lang === "id" ? "Switch to English" : "Ganti ke Bahasa Indonesia"}
             >
-              {lang === "id" ? "ID | EN" : "EN | ID"}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z" /></svg>
+              {lang === "id" ? "EN" : "ID"}
             </button>
+            <span className="hidden h-4 w-px bg-zinc-200 sm:block" />
             <button
               onClick={() => window.print()}
-              className="hidden rounded-full border border-zinc-300 px-4 py-2 text-xs font-semibold transition hover:border-zinc-950 sm:block"
+              className="hidden items-center gap-1.5 rounded-full px-2.5 py-2 text-xs font-semibold text-zinc-500 transition hover:text-zinc-950 sm:inline-flex"
             >
-              {t.nav.cv}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 3v12m0 0 4-4m-4 4-4-4" /><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" /></svg>
+              CV
             </button>
             <a
               href="#contact"
-              className="hidden rounded-full bg-zinc-950 px-4 py-2 text-xs font-semibold text-white transition hover:bg-zinc-800 md:block"
+              className="ml-1 hidden rounded-full bg-zinc-950 px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-zinc-800 md:block"
             >
               {t.nav.contactCta}
             </a>
             <button
               onClick={() => setMenuOpen((v) => !v)}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-zinc-300 lg:hidden"
+              className="flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-zinc-100 lg:hidden"
               aria-label="Menu"
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+              {menuOpen ? (
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 6l12 12M18 6 6 18" /></svg>
+              ) : (
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+              )}
             </button>
           </div>
         </div>
         {menuOpen && (
-          <nav className="border-t border-zinc-200 bg-white px-6 py-3 lg:hidden">
-            <div className="grid gap-1">
-              {sections.map((s) => (
-                <a
-                  key={s.id}
-                  href={`#${s.id}`}
-                  onClick={() => setMenuOpen(false)}
-                  className="rounded-lg px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100"
+          <div className="px-4 pb-4 lg:hidden">
+            <nav className="rounded-2xl border border-zinc-200 bg-white p-2 shadow-[0_24px_60px_-24px_rgba(0,0,0,0.3)]">
+              <div className="grid gap-0.5">
+                {sections.map((s) => (
+                  <a
+                    key={s.id}
+                    href={`#${s.id}`}
+                    onClick={() => setMenuOpen(false)}
+                    className={`flex items-center justify-between rounded-xl px-4 py-2.5 text-sm transition ${
+                      active === s.id
+                        ? "bg-zinc-950 font-semibold text-white"
+                        : "text-zinc-700 hover:bg-zinc-100"
+                    }`}
+                  >
+                    {s.label}
+                    <span className="text-zinc-300">→</span>
+                  </a>
+                ))}
+              </div>
+              <div className="mt-2 grid grid-cols-2 gap-2 border-t border-zinc-100 p-2">
+                <button
+                  onClick={() => window.print()}
+                  className="rounded-full border border-zinc-200 px-4 py-2.5 text-xs font-semibold transition hover:border-zinc-950"
                 >
-                  {s.label}
+                  {t.nav.cv}
+                </button>
+                <a
+                  href="#contact"
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-full bg-zinc-950 px-4 py-2.5 text-center text-xs font-semibold text-white"
+                >
+                  {t.nav.contactCta}
                 </a>
-              ))}
-            </div>
-          </nav>
+              </div>
+            </nav>
+          </div>
         )}
       </header>
 
@@ -223,37 +281,87 @@ export default function Portfolio() {
               </Reveal>
             </div>
 
-            {/* Kartu profil, minimal */}
+            {/* Kartu kontak */}
             <Reveal delay={200} className="lg:justify-self-end lg:sticky lg:top-24">
-              <aside className="w-full max-w-sm rounded-2xl border border-zinc-200 bg-white">
-                <div className="flex items-center gap-4 border-b border-zinc-100 p-5">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-950 text-sm font-bold text-white">
-                    {profile.initials}
+              <aside className="w-full max-w-sm overflow-hidden rounded-[24px] border border-zinc-200/90 bg-white shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)]">
+                <div className="p-6 pb-5">
+                  <div className="flex items-start gap-4">
+                    <div className="relative shrink-0">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-950 text-sm font-bold tracking-wide text-white">
+                        {profile.initials}
+                      </div>
+                      <span className="absolute -right-0.5 -bottom-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-zinc-950" title="Available" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate text-[15px] font-semibold tracking-tight">{profile.name}</p>
+                      <p className="mt-0.5 text-[13px] text-zinc-500">{profile.role[lang]}</p>
+                      <p className="mt-1.5 flex items-center gap-1 text-xs text-zinc-400">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" /><circle cx="12" cy="10" r="3" /></svg>
+                        {profile.location}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold">{profile.name}</p>
-                    <p className="text-xs text-zinc-500">{profile.role[lang]}</p>
-                  </div>
+                  <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-zinc-100 px-3 py-1.5 text-[11px] font-medium text-zinc-600">
+                    <span className="h-1.5 w-1.5 rounded-full bg-zinc-950" />
+                    {profile.availability[lang]}
+                  </p>
                 </div>
-                <div className="divide-y divide-zinc-100 text-sm">
-                  <a href={`mailto:${profile.email}`} className="flex items-center justify-between px-5 py-3.5 transition hover:bg-zinc-50">
-                    <span className="text-xs uppercase tracking-wide text-zinc-400">Email</span>
-                    <span className="font-medium">{profile.email}</span>
+
+                <div className="border-t border-zinc-100 p-2">
+                  <a href={`mailto:${profile.email}`} className="group flex items-center gap-3 rounded-2xl px-3 py-3 transition hover:bg-zinc-50">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 transition group-hover:bg-zinc-950 group-hover:text-white">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg>
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[11px] font-medium tracking-wide text-zinc-400 uppercase">Email</span>
+                      <span className="block truncate text-[13px] font-semibold">{profile.email}</span>
+                    </span>
+                    <span className="text-zinc-300 opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100">→</span>
                   </a>
-                  <a href={profile.whatsapp} target="_blank" rel="noreferrer" className="flex items-center justify-between px-5 py-3.5 transition hover:bg-zinc-50">
-                    <span className="text-xs uppercase tracking-wide text-zinc-400">WhatsApp</span>
-                    <span className="font-medium">{profile.whatsappDisplay}</span>
+                  <a href={profile.whatsapp} target="_blank" rel="noreferrer" className="group flex items-center gap-3 rounded-2xl px-3 py-3 transition hover:bg-zinc-50">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 transition group-hover:bg-zinc-950 group-hover:text-white">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.5L3 21l2-5.4A8.5 8.5 0 1 1 21 11.5z" /></svg>
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[11px] font-medium tracking-wide text-zinc-400 uppercase">WhatsApp</span>
+                      <span className="block text-[13px] font-semibold">{profile.whatsappDisplay}</span>
+                    </span>
+                    <span className="text-zinc-300 opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100">→</span>
                   </a>
-                  <a href={profile.jolink} target="_blank" rel="noreferrer" className="flex items-center justify-between px-5 py-3.5 transition hover:bg-zinc-50">
-                    <span className="text-xs uppercase tracking-wide text-zinc-400">Bisnis</span>
-                    <span className="font-medium">jolink.co.id</span>
+                  <a href={profile.jolink} target="_blank" rel="noreferrer" className="group flex items-center gap-3 rounded-2xl px-3 py-3 transition hover:bg-zinc-50">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 transition group-hover:bg-zinc-950 group-hover:text-white">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9s-1.4 6.4-3.9 9c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z" /></svg>
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[11px] font-medium tracking-wide text-zinc-400 uppercase">Bisnis</span>
+                      <span className="block text-[13px] font-semibold">jolink.co.id</span>
+                    </span>
+                    <span className="text-zinc-300 opacity-0 transition group-hover:translate-x-0.5 group-hover:opacity-100">→</span>
                   </a>
                 </div>
-                <p className="border-t border-zinc-100 px-5 py-3 text-center text-[11px] text-zinc-400">
-                  {t.hero.scroll}
-                </p>
+
+                <div className="grid grid-cols-2 gap-2 border-t border-zinc-100 p-3">
+                  <a
+                    href="#contact"
+                    className="rounded-full bg-zinc-950 px-4 py-2.5 text-center text-[13px] font-semibold text-white transition hover:bg-zinc-800"
+                  >
+                    {t.hero.ctaContact}
+                  </a>
+                  <button
+                    onClick={() => window.print()}
+                    className="rounded-full border border-zinc-200 px-4 py-2.5 text-[13px] font-semibold transition hover:border-zinc-950"
+                  >
+                    {t.nav.cv}
+                  </button>
+                </div>
               </aside>
             </Reveal>
+          </div>
+          <div className="mt-14 flex justify-center">
+            <p className="flex items-center gap-2 text-[11px] font-medium tracking-wide text-zinc-400 uppercase">
+              {t.hero.scroll}
+              <span className="inline-block animate-bounce">↓</span>
+            </p>
           </div>
         </div>
       </section>
