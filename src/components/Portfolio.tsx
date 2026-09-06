@@ -1,20 +1,53 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { dict, profile, type Lang } from "@/lib/content";
 import { Reveal, useRevealRoot } from "./Reveal";
 
-function ThemeIcon({ dark }: { dark: boolean }) {
-  return dark ? (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
-  ) : (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>
+function getInitialLang(): Lang {
+  if (typeof window === "undefined") return "id";
+  try {
+    return window.localStorage.getItem("porto-lang") === "en" ? "en" : "id";
+  } catch {
+    return "id";
+  }
+}
+
+function SectionHead({
+  index,
+  eyebrow,
+  title,
+  desc,
+}: {
+  index: string;
+  eyebrow: string;
+  title: string;
+  desc?: string;
+}) {
+  return (
+    <div>
+      <Reveal>
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-xs text-zinc-400">{index}</span>
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+            {eyebrow}
+          </span>
+          <span className="h-px flex-1 bg-zinc-200" />
+        </div>
+        <h2 className="mt-4 max-w-2xl text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">
+          {title}
+        </h2>
+        {desc ? (
+          <p className="mt-3 max-w-2xl text-[15px] leading-7 text-zinc-600">{desc}</p>
+        ) : null}
+      </Reveal>
+    </div>
   );
 }
 
 export default function Portfolio() {
-  const [lang, setLang] = useState<Lang>("id");
-  const [dark, setDark] = useState(false);
+  const [lang, setLang] = useState<Lang>(getInitialLang);
   const [progress, setProgress] = useState(0);
   const [name, setName] = useState("");
   const [msg, setMsg] = useState("");
@@ -23,15 +56,13 @@ export default function Portfolio() {
   const rootRef = useRevealRoot<HTMLDivElement>(lang);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("porto-theme");
-    const savedLang = localStorage.getItem("porto-lang") as Lang | null;
-    if (savedLang === "id" || savedLang === "en") setLang(savedLang);
-    const isDark =
-      savedTheme === "dark" ||
-      (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches);
-    setDark(isDark);
-    document.documentElement.classList.toggle("dark", isDark);
-  }, []);
+    document.documentElement.lang = lang;
+    try {
+      window.localStorage.setItem("porto-lang", lang);
+    } catch {
+      // abaikan, bukan fatal
+    }
+  }, [lang]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -44,18 +75,8 @@ export default function Portfolio() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const toggleTheme = () => {
-    const next = !dark;
-    setDark(next);
-    document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem("porto-theme", next ? "dark" : "light");
-  };
-
   const toggleLang = () => {
-    const next: Lang = lang === "id" ? "en" : "id";
-    setLang(next);
-    localStorage.setItem("porto-lang", next);
-    document.documentElement.lang = next;
+    setLang((prev) => (prev === "id" ? "en" : "id"));
   };
 
   const mailHref = `mailto:${profile.email}?subject=${encodeURIComponent(
@@ -76,22 +97,22 @@ export default function Portfolio() {
   ];
 
   return (
-    <div ref={rootRef}>
-      {/* scroll progress */}
-      <div className="fixed top-0 left-0 right-0 z-[60] h-[3px] bg-zinc-200/60 dark:bg-zinc-800/60">
-        <div id="scroll-progress" className="h-full bg-emerald-600" style={{ width: `${progress}%` }} />
+    <div ref={rootRef} className="bg-white text-zinc-950">
+      {/* scroll progress, hitam tipis */}
+      <div className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-zinc-100">
+        <div className="h-full bg-zinc-950" style={{ width: `${progress}%` }} />
       </div>
 
       {/* NAVBAR */}
-      <header className="fixed top-[3px] left-0 right-0 z-50 border-b border-zinc-200/70 bg-white/80 backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-950/80">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
+      <header className="fixed top-[2px] left-0 right-0 z-50 border-b border-zinc-200 bg-white/90 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
           <a href="#top" className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-950 text-sm font-bold text-white dark:bg-white dark:text-zinc-950">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-950 text-xs font-bold text-white">
               {profile.initials}
             </span>
             <span className="leading-tight">
               <span className="block text-sm font-semibold tracking-tight">{profile.name}</span>
-              <span className="block text-xs text-zinc-500 dark:text-zinc-400">{profile.role[lang]}</span>
+              <span className="block text-xs text-zinc-500">{profile.role[lang]}</span>
             </span>
           </a>
 
@@ -100,7 +121,7 @@ export default function Portfolio() {
               <a
                 key={s.id}
                 href={`#${s.id}`}
-                className="rounded-full px-3 py-2 text-sm text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
+                className="rounded-full px-3 py-2 text-sm text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-950"
               >
                 {s.label}
               </a>
@@ -110,34 +131,27 @@ export default function Portfolio() {
           <div className="flex items-center gap-2">
             <button
               onClick={toggleLang}
-              className="rounded-full border border-zinc-200 px-3 py-1.5 text-xs font-semibold tracking-wide transition hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-500"
+              className="rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-semibold tracking-wide transition hover:border-zinc-950"
               aria-label="Toggle language"
               title="ID / EN"
             >
-              {lang === "id" ? "ID → EN" : "EN → ID"}
-            </button>
-            <button
-              onClick={toggleTheme}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 transition hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-500"
-              aria-label="Toggle theme"
-            >
-              <ThemeIcon dark={dark} />
+              {lang === "id" ? "ID | EN" : "EN | ID"}
             </button>
             <button
               onClick={() => window.print()}
-              className="hidden rounded-full bg-zinc-950 px-4 py-2 text-xs font-semibold text-white transition hover:bg-zinc-800 sm:block dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+              className="hidden rounded-full border border-zinc-300 px-4 py-2 text-xs font-semibold transition hover:border-zinc-950 sm:block"
             >
               {t.nav.cv}
             </button>
             <a
               href="#contact"
-              className="hidden rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700 md:block"
+              className="hidden rounded-full bg-zinc-950 px-4 py-2 text-xs font-semibold text-white transition hover:bg-zinc-800 md:block"
             >
               {t.nav.contactCta}
             </a>
             <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 lg:hidden dark:border-zinc-700"
+              onClick={() => setMenuOpen((v) => !v)}
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-zinc-300 lg:hidden"
               aria-label="Menu"
             >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
@@ -145,14 +159,14 @@ export default function Portfolio() {
           </div>
         </div>
         {menuOpen && (
-          <nav className="border-t border-zinc-200 px-5 py-3 lg:hidden dark:border-zinc-800">
+          <nav className="border-t border-zinc-200 bg-white px-6 py-3 lg:hidden">
             <div className="grid gap-1">
               {sections.map((s) => (
                 <a
                   key={s.id}
                   href={`#${s.id}`}
                   onClick={() => setMenuOpen(false)}
-                  className="rounded-lg px-3 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  className="rounded-lg px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-100"
                 >
                   {s.label}
                 </a>
@@ -163,201 +177,228 @@ export default function Portfolio() {
       </header>
 
       {/* HERO */}
-      <section id="top" className="relative overflow-hidden pt-28 pb-14 sm:pt-32">
-        <div className="bg-grid mask-fade-b absolute inset-0" />
-        <div className="absolute -top-24 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-emerald-500/15 blur-3xl dark:bg-emerald-500/10" />
-        <div className="relative mx-auto max-w-6xl px-5">
+      <section id="top" className="pt-28 pb-16 sm:pt-36 sm:pb-20">
+        <div className="mx-auto max-w-5xl px-6">
           <Reveal>
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-600/20 bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600" />
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-zinc-200 bg-white px-3.5 py-1.5 text-xs text-zinc-600">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-zinc-950 opacity-30" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-zinc-950" />
               </span>
-              {t.hero.badge}
-              <span className="text-zinc-400">•</span>
-              <span className="text-zinc-600 dark:text-zinc-300">{profile.location}</span>
+              <span className="font-medium">{t.hero.badge}</span>
+              <span className="text-zinc-300">/</span>
+              <span>{profile.location}</span>
             </div>
           </Reveal>
 
-          <div className="mt-6 grid items-center gap-10 lg:grid-cols-[1.5fr_1fr]">
+          <div className="mt-8 grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:items-start">
             <div>
               <Reveal delay={60}>
-                <p className="text-sm font-medium tracking-wide text-zinc-500 dark:text-zinc-400">{t.hero.greeting}</p>
-                <h1 className="mt-1 text-4xl font-bold tracking-tight text-balance sm:text-6xl">
+                <p className="text-sm font-medium text-zinc-500">{t.hero.greeting},</p>
+                <h1 className="mt-2 text-5xl font-bold tracking-tight text-zinc-950 sm:text-6xl">
                   {profile.name}
-                  <span className="text-emerald-600">.</span>
                 </h1>
-                <p className="mt-3 text-lg font-semibold text-zinc-800 sm:text-xl dark:text-zinc-100">
-                  {profile.role[lang]} — {profile.tagline[lang]}
+                <p className="mt-4 text-lg font-semibold tracking-tight text-zinc-950">
+                  {profile.role[lang]}
                 </p>
+                <p className="mt-1 text-[15px] text-zinc-600">{profile.tagline[lang]}</p>
               </Reveal>
               <Reveal delay={120}>
-                <p className="mt-4 max-w-2xl text-[15px] leading-7 text-zinc-600 dark:text-zinc-300">
+                <p className="mt-5 max-w-xl text-[15px] leading-7 text-zinc-600">
                   {profile.summary[lang]}
                 </p>
               </Reveal>
               <Reveal delay={180}>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <a href="#projects" className="rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200">
-                    {t.hero.ctaProjects} →
+                <div className="mt-7 flex flex-wrap items-center gap-3">
+                  <a
+                    href="#projects"
+                    className="rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-zinc-800"
+                  >
+                    {t.hero.ctaProjects}
                   </a>
-                  <a href="#contact" className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5 hover:border-zinc-500 dark:border-zinc-700 dark:hover:border-zinc-400">
+                  <a
+                    href="#contact"
+                    className="rounded-full border border-zinc-300 px-5 py-2.5 text-sm font-semibold transition hover:border-zinc-950"
+                  >
                     {t.hero.ctaContact}
                   </a>
-                  <a href={profile.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-zinc-300 px-4 py-2.5 text-sm font-medium transition hover:-translate-y-0.5 dark:border-zinc-700">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.93c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.54-3.87-1.54-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.05.78 2.13v3.16c0 .31.2.67.8.55A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z" /></svg>
+                  <a
+                    href={profile.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 px-2 py-2.5 text-sm font-medium text-zinc-600 underline decoration-zinc-300 underline-offset-4 transition hover:text-zinc-950 hover:decoration-zinc-950"
+                  >
+                    <Image src="/icons/github.svg" alt="GitHub" width={16} height={16} unoptimized className="h-4 w-4" />
                     {profile.githubHandle}
                   </a>
                 </div>
               </Reveal>
               <Reveal delay={240}>
-                <dl className="mt-8 grid max-w-xl grid-cols-3 gap-3">
-                  {t.hero.stats.map((s) => (
-                    <div key={s.label} className="rounded-2xl border border-zinc-200 bg-white/70 p-3 backdrop-blur dark:border-zinc-800 dark:bg-zinc-900/70">
-                      <dt className="order-2 mt-1 text-[11px] leading-4 text-zinc-500 dark:text-zinc-400">{s.label}</dt>
-                      <dd className="text-lg font-bold tracking-tight">{s.value}</dd>
+                <dl className="mt-10 grid max-w-xl grid-cols-3">
+                  {t.hero.stats.map((s, i) => (
+                    <div
+                      key={s.label}
+                      className={i === 0 ? "pr-6" : "border-l border-zinc-200 px-6"}
+                    >
+                      <dd className="text-2xl font-bold tracking-tight">{s.value}</dd>
+                      <dt className="mt-1 text-xs leading-5 text-zinc-500">{s.label}</dt>
                     </div>
                   ))}
                 </dl>
               </Reveal>
             </div>
 
-            {/* Profile card */}
-            <Reveal delay={200} className="lg:justify-self-end">
-              <div className="w-full max-w-sm rounded-3xl border border-zinc-200 bg-white p-6 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25)] dark:border-zinc-800 dark:bg-zinc-900">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-700 text-xl font-bold text-white">
+            {/* Kartu profil, minimal */}
+            <Reveal delay={200} className="lg:justify-self-end lg:sticky lg:top-24">
+              <aside className="w-full max-w-sm rounded-2xl border border-zinc-200 bg-white">
+                <div className="flex items-center gap-4 border-b border-zinc-100 p-5">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-950 text-sm font-bold text-white">
                     {profile.initials}
                   </div>
                   <div>
-                    <p className="font-semibold">{profile.name}</p>
-                    <p className="text-sm text-zinc-500 dark:text-zinc-400">{profile.role[lang]}</p>
-                    <p className="mt-1 inline-flex items-center gap-1 text-xs text-zinc-500">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" /><circle cx="12" cy="10" r="3" /></svg>
-                      {profile.location}
-                    </p>
+                    <p className="text-sm font-semibold">{profile.name}</p>
+                    <p className="text-xs text-zinc-500">{profile.role[lang]}</p>
                   </div>
                 </div>
-                <div className="mt-5 space-y-2.5 text-sm">
-                  <a href={`mailto:${profile.email}`} className="flex items-center justify-between rounded-xl bg-zinc-50 px-3 py-2.5 transition hover:bg-zinc-100 dark:bg-zinc-800/60 dark:hover:bg-zinc-800">
-                    <span className="text-zinc-500">Email</span><span className="font-medium">{profile.email}</span>
+                <div className="divide-y divide-zinc-100 text-sm">
+                  <a href={`mailto:${profile.email}`} className="flex items-center justify-between px-5 py-3.5 transition hover:bg-zinc-50">
+                    <span className="text-xs uppercase tracking-wide text-zinc-400">Email</span>
+                    <span className="font-medium">{profile.email}</span>
                   </a>
-                  <a href={profile.whatsapp} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-xl bg-zinc-50 px-3 py-2.5 transition hover:bg-zinc-100 dark:bg-zinc-800/60 dark:hover:bg-zinc-800">
-                    <span className="text-zinc-500">WhatsApp</span><span className="font-medium">{profile.whatsappDisplay}</span>
+                  <a href={profile.whatsapp} target="_blank" rel="noreferrer" className="flex items-center justify-between px-5 py-3.5 transition hover:bg-zinc-50">
+                    <span className="text-xs uppercase tracking-wide text-zinc-400">WhatsApp</span>
+                    <span className="font-medium">{profile.whatsappDisplay}</span>
                   </a>
-                  <a href={profile.jolink} target="_blank" rel="noreferrer" className="flex items-center justify-between rounded-xl bg-emerald-50 px-3 py-2.5 transition hover:bg-emerald-100 dark:bg-emerald-950/40 dark:hover:bg-emerald-950/60">
-                    <span className="text-emerald-700 dark:text-emerald-300">Bisnis</span><span className="font-medium">jolink.co.id ↗</span>
+                  <a href={profile.jolink} target="_blank" rel="noreferrer" className="flex items-center justify-between px-5 py-3.5 transition hover:bg-zinc-50">
+                    <span className="text-xs uppercase tracking-wide text-zinc-400">Bisnis</span>
+                    <span className="font-medium">jolink.co.id</span>
                   </a>
                 </div>
-                <p className="mt-4 text-center text-[11px] text-zinc-400">{t.hero.scroll} ↓</p>
-              </div>
+                <p className="border-t border-zinc-100 px-5 py-3 text-center text-[11px] text-zinc-400">
+                  {t.hero.scroll}
+                </p>
+              </aside>
             </Reveal>
           </div>
         </div>
       </section>
 
+      <div className="mx-auto max-w-5xl px-6">
+        <div className="h-px bg-zinc-200" />
+      </div>
+
       {/* ABOUT */}
-      <section id="about" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-12">
-        <Reveal>
-          <p className="text-xs font-bold tracking-[0.18em] text-emerald-600 uppercase">{t.about.eyebrow}</p>
-          <h2 className="mt-2 max-w-xl text-2xl font-bold tracking-tight text-balance sm:text-3xl">{t.about.title}</h2>
-        </Reveal>
-        <div className="mt-6 grid gap-5 lg:grid-cols-[1.4fr_1fr]">
+      <section id="about" className="mx-auto max-w-5xl scroll-mt-24 px-6 py-16 sm:py-20">
+        <SectionHead index={t.about.index} eyebrow={t.about.eyebrow} title={t.about.title} />
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1.5fr_1fr]">
           <Reveal delay={80}>
-            <div className="rounded-3xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-zinc-800 dark:bg-zinc-900/60">
-              <p className="leading-7 text-zinc-600 dark:text-zinc-300">{t.about.body1}</p>
-              <p className="mt-3 leading-7 text-zinc-600 dark:text-zinc-300">{t.about.body2}</p>
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {t.about.points.map((p) => (
-                  <div key={p.title} className="rounded-2xl bg-zinc-50 p-4 dark:bg-zinc-800/60">
-                    <p className="text-sm font-semibold">{p.title}</p>
-                    <p className="mt-1 text-[13px] leading-5 text-zinc-600 dark:text-zinc-300">{p.desc}</p>
+            <div>
+              <p className="text-[15px] leading-7 text-zinc-600">{t.about.body1}</p>
+              <p className="mt-4 text-[15px] leading-7 text-zinc-600">{t.about.body2}</p>
+              <div className="mt-8 divide-y divide-zinc-200 border-y border-zinc-200">
+                {t.about.points.map((p, i) => (
+                  <div key={p.title} className="flex gap-4 py-4">
+                    <span className="font-mono text-xs text-zinc-400">0{i + 1}</span>
+                    <div>
+                      <p className="text-sm font-semibold">{p.title}</p>
+                      <p className="mt-1 text-sm leading-6 text-zinc-600">{p.desc}</p>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
           </Reveal>
           <Reveal delay={140}>
-            <div className="rounded-3xl border border-zinc-200 bg-zinc-950 p-6 text-white sm:p-7 dark:border-zinc-700 dark:bg-black">
-              <p className="text-sm font-semibold text-zinc-300">{t.about.cardTitle}</p>
-              <dl className="mt-4 space-y-3">
+            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
+                {t.about.cardTitle}
+              </p>
+              <dl className="mt-4 divide-y divide-zinc-200">
                 {t.about.cardRows.map(([k, v]) => (
-                  <div key={k} className="border-b border-white/10 pb-3 last:border-0 last:pb-0">
-                    <dt className="text-xs text-zinc-400">{k}</dt>
-                    <dd className="mt-0.5 text-sm font-medium">{v}</dd>
+                  <div key={k} className="py-3 first:pt-0 last:pb-0">
+                    <dt className="text-xs text-zinc-500">{k}</dt>
+                    <dd className="mt-1 text-sm font-medium leading-6">{v}</dd>
                   </div>
                 ))}
               </dl>
-              <a href={profile.jolink} target="_blank" rel="noreferrer" className="mt-5 block rounded-xl bg-emerald-600 px-4 py-2.5 text-center text-sm font-semibold transition hover:bg-emerald-500">
-                jolink.co.id ↗
-              </a>
             </div>
           </Reveal>
         </div>
       </section>
 
       {/* SKILLS */}
-      <section id="skills" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-12">
-        <Reveal>
-          <p className="text-xs font-bold tracking-[0.18em] text-emerald-600 uppercase">{t.skills.eyebrow}</p>
-          <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{t.skills.title}</h2>
-          <p className="mt-2 max-w-2xl text-[15px] text-zinc-600 dark:text-zinc-300">{t.skills.desc}</p>
-        </Reveal>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          {t.skills.groups.map((g, i) => (
-            <Reveal key={g.title} delay={i * 90}>
-              <div className="h-full rounded-3xl border border-zinc-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900/60">
-                <p className="text-sm font-bold">{g.title}</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {g.items.map((s) => (
-                    <span key={s} className="rounded-full bg-zinc-100 px-3 py-1.5 text-[13px] font-medium dark:bg-zinc-800">
-                      {s}
-                    </span>
-                  ))}
+      <section id="skills" className="border-t border-zinc-200 bg-zinc-50/60">
+        <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
+          <SectionHead index={t.skills.index} eyebrow={t.skills.eyebrow} title={t.skills.title} desc={t.skills.desc} />
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {t.skills.groups.map((g, i) => (
+              <Reveal key={g.title} delay={i * 80}>
+                <div className="flex h-full flex-col rounded-2xl border border-zinc-200 bg-white p-6">
+                  <p className="text-sm font-bold tracking-tight">{g.title}</p>
+                  <p className="mt-1 text-xs text-zinc-500">{g.desc}</p>
+                  <ul className="mt-5 flex-1 divide-y divide-zinc-100 border-t border-zinc-100">
+                    {g.items.map((s) => (
+                      <li key={s.name} className="flex items-center gap-3 py-2.5">
+                        <Image
+                          src={s.icon}
+                          alt={s.name}
+                          width={20}
+                          height={20}
+                          unoptimized
+                          className="h-5 w-5 shrink-0"
+                        />
+                        <span className="text-sm font-medium">{s.name}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            ))}
+          </div>
+          <Reveal delay={120}>
+            <p className="mt-6 border-l-2 border-zinc-950 pl-4 text-sm leading-6 text-zinc-600">
+              {t.skills.note}
+            </p>
+          </Reveal>
         </div>
-        <Reveal delay={120}>
-          <p className="mt-4 rounded-2xl border border-dashed border-zinc-300 p-4 text-[13px] text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
-            ⓘ {t.skills.note}
-          </p>
-        </Reveal>
       </section>
 
       {/* EXPERIENCE */}
-      <section id="experience" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-12">
-        <Reveal>
-          <p className="text-xs font-bold tracking-[0.18em] text-emerald-600 uppercase">{t.experience.eyebrow}</p>
-          <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{t.experience.title}</h2>
-        </Reveal>
-        <div className="mt-6 space-y-4">
+      <section id="experience" className="mx-auto max-w-5xl scroll-mt-24 px-6 py-16 sm:py-20">
+        <SectionHead index={t.experience.index} eyebrow={t.experience.eyebrow} title={t.experience.title} />
+        <div className="mt-8 divide-y divide-zinc-200 border-y border-zinc-200">
           {t.experience.items.map((e, i) => (
-            <Reveal key={e.org} delay={i * 80}>
-              <article className="grid gap-4 rounded-3xl border border-zinc-200 bg-white p-6 transition hover:shadow-lg sm:p-7 lg:grid-cols-[200px_1fr] dark:border-zinc-800 dark:bg-zinc-900/60">
+            <Reveal key={e.org} delay={i * 60}>
+              <article className="grid gap-4 py-8 lg:grid-cols-[160px_1fr] lg:gap-8">
                 <div>
-                  <p className="inline-block rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">{e.period}</p>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {e.tags.map((tag) => (
-                      <span key={tag} className="rounded-full border border-zinc-200 px-2.5 py-1 text-[11px] text-zinc-600 dark:border-zinc-700 dark:text-zinc-300">{tag}</span>
-                    ))}
-                  </div>
+                  <p className="font-mono text-xs text-zinc-500">{e.period}</p>
                 </div>
                 <div>
-                  <h3 className="font-bold">{e.role}</h3>
-                  <p className="text-sm text-zinc-500 dark:text-zinc-400">{e.org}</p>
-                  <ul className="mt-3 space-y-2">
+                  <h3 className="text-base font-bold tracking-tight">{e.role}</h3>
+                  <p className="mt-1 text-sm text-zinc-500">{e.org}</p>
+                  <ul className="mt-4 space-y-2.5">
                     {e.bullets.map((b) => (
-                      <li key={b} className="flex gap-2 text-[14px] leading-6 text-zinc-600 dark:text-zinc-300">
-                        <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-600" />
+                      <li key={b} className="flex gap-3 text-sm leading-6 text-zinc-600">
+                        <span className="mt-[10px] h-1 w-1 shrink-0 rounded-full bg-zinc-400" />
                         {b}
                       </li>
                     ))}
                   </ul>
-                  {"link" in e && e.link ? (
-                    <a href={e.link as string} target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm font-semibold text-emerald-700 hover:underline dark:text-emerald-300">
-                      {(e.link as string).replace("https://", "")} ↗
+                  <div className="mt-4 flex flex-wrap items-center gap-2">
+                    {e.tags.map((tag) => (
+                      <span key={tag} className="rounded-full border border-zinc-200 px-2.5 py-1 text-[11px] font-medium text-zinc-600">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  {"link" in e && typeof e.link === "string" ? (
+                    <a
+                      href={e.link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-4 inline-block text-sm font-semibold underline decoration-zinc-300 underline-offset-4 hover:decoration-zinc-950"
+                    >
+                      {e.link.replace("https://", "")}
                     </a>
                   ) : null}
                 </div>
@@ -368,57 +409,67 @@ export default function Portfolio() {
       </section>
 
       {/* PROJECTS */}
-      <section id="projects" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-12">
-        <Reveal>
-          <p className="text-xs font-bold tracking-[0.18em] text-emerald-600 uppercase">{t.projects.eyebrow}</p>
-          <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{t.projects.title}</h2>
-          <p className="mt-2 max-w-2xl text-[15px] text-zinc-600 dark:text-zinc-300">{t.projects.desc}</p>
-        </Reveal>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          {t.projects.items.map((p, i) => (
-            <Reveal key={p.name} delay={i * 90}>
-              <article className="group flex h-full flex-col rounded-3xl border border-zinc-200 bg-white p-6 transition hover:-translate-y-1 hover:shadow-xl sm:p-7 dark:border-zinc-800 dark:bg-zinc-900/60">
-                <p className="text-xs font-bold tracking-wide text-emerald-600 uppercase">{p.tag}</p>
-                <h3 className="mt-2 text-xl font-bold tracking-tight">{p.name}</h3>
-                <p className="mt-2 flex-1 text-[14px] leading-6 text-zinc-600 dark:text-zinc-300">{p.desc}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {p.stack.map((s) => (
-                    <span key={s} className="rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-medium dark:bg-zinc-800">{s}</span>
-                  ))}
-                </div>
-                <a href={p.link} target="_blank" rel="noreferrer" className="mt-5 inline-flex items-center justify-center rounded-xl bg-zinc-950 px-4 py-2.5 text-sm font-semibold text-white transition group-hover:bg-emerald-600 dark:bg-white dark:text-zinc-950 dark:group-hover:bg-emerald-500 dark:group-hover:text-white">
-                  {p.cta} ↗
-                </a>
-              </article>
-            </Reveal>
-          ))}
+      <section id="projects" className="border-t border-zinc-200 bg-zinc-50/60">
+        <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
+          <SectionHead index={t.projects.index} eyebrow={t.projects.eyebrow} title={t.projects.title} desc={t.projects.desc} />
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            {t.projects.items.map((p, i) => (
+              <Reveal key={p.name} delay={i * 80}>
+                <article className="group flex h-full flex-col rounded-2xl border border-zinc-200 bg-white p-7 transition hover:border-zinc-950">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500">
+                      {p.tag}
+                    </p>
+                    <span className="font-mono text-xs text-zinc-300">0{i + 1}</span>
+                  </div>
+                  <h3 className="mt-3 text-xl font-bold tracking-tight">{p.name}</h3>
+                  <p className="mt-1 font-mono text-xs text-zinc-400">{p.meta}</p>
+                  <p className="mt-3 flex-1 text-sm leading-6 text-zinc-600">{p.desc}</p>
+                  <p className="mt-4 border-t border-zinc-100 pt-4 font-mono text-xs leading-5 text-zinc-500">
+                    {p.stack.join(" / ")}
+                  </p>
+                  <a
+                    href={p.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-5 inline-flex items-center justify-center rounded-full bg-zinc-950 px-4 py-2.5 text-sm font-semibold text-white transition group-hover:bg-black"
+                  >
+                    {p.cta} <span className="ml-2">→</span>
+                  </a>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal delay={120}>
+            <p className="mt-6 text-center text-sm text-zinc-500">{t.projects.more}</p>
+          </Reveal>
         </div>
-        <Reveal delay={120}>
-          <p className="mt-4 text-center text-sm text-zinc-500 dark:text-zinc-400">{t.projects.more}</p>
-        </Reveal>
       </section>
 
       {/* ACHIEVEMENT */}
-      <section id="achievement" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-12">
-        <Reveal>
-          <div className="overflow-hidden rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-white p-6 sm:p-8 dark:border-amber-900/40 dark:from-amber-950/30 dark:via-zinc-900 dark:to-zinc-900">
-            <div className="grid items-center gap-6 lg:grid-cols-[1.2fr_1fr]">
-              <div>
-                <p className="text-xs font-bold tracking-[0.18em] text-amber-600 uppercase">{t.achievement.eyebrow}</p>
-                <h2 className="mt-2 text-2xl font-bold tracking-tight text-balance sm:text-3xl">{t.achievement.title}</h2>
-                <p className="mt-2 text-[15px] text-zinc-600 dark:text-zinc-300">{t.achievement.desc}</p>
-                <div className="mt-4 rounded-2xl bg-white/70 p-4 dark:bg-black/30">
-                  <p className="font-semibold">🏆 {t.achievement.cardTitle}</p>
-                  <p className="mt-1 text-sm leading-6 text-zinc-600 dark:text-zinc-300">{t.achievement.cardDesc}</p>
-                </div>
-                <a href={profile.whatsapp} target="_blank" rel="noreferrer" className="mt-4 inline-block rounded-full bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-amber-600">
-                  {t.achievement.cta}
-                </a>
-              </div>
-              <div className="rounded-2xl border-2 border-dashed border-amber-300 bg-white/60 p-6 text-center dark:border-amber-800 dark:bg-black/20">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-2xl dark:bg-amber-950">🎓</div>
-                <p className="mt-3 text-sm font-semibold">Certificate slot</p>
-                <p className="mx-auto mt-1 max-w-[26ch] text-[13px] leading-5 text-zinc-500 dark:text-zinc-400">{t.achievement.uploadNote}</p>
+      <section id="achievement" className="mx-auto max-w-5xl scroll-mt-24 px-6 py-16 sm:py-20">
+        <SectionHead index={t.achievement.index} eyebrow={t.achievement.eyebrow} title={t.achievement.title} desc={t.achievement.desc} />
+        <Reveal delay={80}>
+          <div className="mt-8 grid gap-0 overflow-hidden rounded-2xl border border-zinc-200 lg:grid-cols-[1.3fr_1fr]">
+            <div className="bg-zinc-950 p-7 text-white sm:p-8">
+              <p className="text-sm font-bold">{t.achievement.cardTitle}</p>
+              <p className="mt-2 text-sm leading-6 text-zinc-300">{t.achievement.cardDesc}</p>
+              <a
+                href={profile.whatsapp}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-6 inline-block rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-zinc-950 transition hover:bg-zinc-200"
+              >
+                {t.achievement.cta}
+              </a>
+            </div>
+            <div className="border-t border-zinc-200 bg-white p-7 sm:p-8 lg:border-t-0 lg:border-l">
+              <div className="flex h-full flex-col items-center justify-center rounded-xl border border-dashed border-zinc-300 bg-zinc-50 p-6 text-center">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-zinc-400"><circle cx="12" cy="8" r="5" /><path d="M8.5 12.5 7 22l5-3 5 3-1.5-9.5" /></svg>
+                <p className="mt-3 text-sm font-semibold">Sertifikat LKS</p>
+                <p className="mx-auto mt-1 max-w-[30ch] text-[13px] leading-5 text-zinc-500">
+                  {t.achievement.uploadNote}
+                </p>
                 <p className="mt-3 font-mono text-[11px] text-zinc-400">public/sertifikat-lks.jpg</p>
               </div>
             </div>
@@ -427,61 +478,68 @@ export default function Portfolio() {
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="mx-auto max-w-6xl scroll-mt-24 px-5 py-12 pb-20">
-        <Reveal>
-          <p className="text-xs font-bold tracking-[0.18em] text-emerald-600 uppercase">{t.contact.eyebrow}</p>
-          <h2 className="mt-2 max-w-xl text-2xl font-bold tracking-tight text-balance sm:text-3xl">{t.contact.title}</h2>
-          <p className="mt-2 max-w-2xl text-[15px] text-zinc-600 dark:text-zinc-300">{t.contact.desc}</p>
-        </Reveal>
-        <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_1fr]">
-          <div className="grid gap-3 sm:grid-cols-2">
-            {t.contact.cards.map((c, i) => (
-              <Reveal key={c.label} delay={i * 70}>
-                <a href={c.href} target="_blank" rel="noreferrer" className="block rounded-2xl border border-zinc-200 bg-white p-5 transition hover:-translate-y-1 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900/60">
-                  <p className="text-xs font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400">{c.label}</p>
-                  <p className="mt-1 font-semibold break-all">{c.value}</p>
-                  <p className="mt-2 text-sm font-medium text-emerald-600">↗</p>
-                </a>
+      <section id="contact" className="border-t border-zinc-200">
+        <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
+          <SectionHead index={t.contact.index} eyebrow={t.contact.eyebrow} title={t.contact.title} desc={t.contact.desc} />
+          <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_1fr]">
+            <div className="grid content-start gap-3 sm:grid-cols-2">
+              {t.contact.cards.map((c, i) => (
+                <Reveal key={c.label} delay={i * 60}>
+                  <a
+                    href={c.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block rounded-2xl border border-zinc-200 bg-white p-5 transition hover:border-zinc-950"
+                  >
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-400">{c.label}</p>
+                    <p className="mt-1.5 text-sm font-semibold break-all">{c.value}</p>
+                  </a>
+                </Reveal>
+              ))}
+              <Reveal delay={200} className="sm:col-span-2">
+                <div className="rounded-2xl bg-zinc-950 p-5 text-sm leading-6 text-zinc-300">
+                  Senin - Sabtu, jam kerja WIB. Di luar itu tetap dibaca, dibalas berikutnya.
+                </div>
               </Reveal>
-            ))}
-          </div>
-          <Reveal delay={120}>
-            <div className="rounded-3xl border border-zinc-200 bg-white p-6 sm:p-7 dark:border-zinc-800 dark:bg-zinc-900/60">
-              <p className="font-bold">{t.contact.formTitle}</p>
-              <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{t.contact.formDesc}</p>
-              <label className="mt-4 block text-xs font-semibold">{lang === "id" ? "Nama" : "Name"}</label>
-              <input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder={t.contact.namePh}
-                className="mt-1.5 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm outline-none focus:border-emerald-500 dark:border-zinc-700 dark:bg-zinc-800"
-              />
-              <label className="mt-3 block text-xs font-semibold">{lang === "id" ? "Pesan" : "Message"}</label>
-              <textarea
-                value={msg}
-                onChange={(e) => setMsg(e.target.value)}
-                placeholder={t.contact.msgPh}
-                rows={4}
-                className="mt-1.5 w-full rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2.5 text-sm outline-none focus:border-emerald-500 dark:border-zinc-700 dark:bg-zinc-800"
-              />
-              <div className="mt-4 grid grid-cols-2 gap-2">
-                <a href={mailHref} className="rounded-xl bg-zinc-950 px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-zinc-800 dark:bg-white dark:text-zinc-950">
-                  {t.contact.sendEmail}
-                </a>
-                <a href={waHref} target="_blank" rel="noreferrer" className="rounded-xl bg-emerald-600 px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-emerald-700">
-                  {t.contact.sendWA}
-                </a>
-              </div>
             </div>
-          </Reveal>
+            <Reveal delay={120}>
+              <div className="rounded-2xl border border-zinc-200 bg-white p-6 sm:p-7">
+                <p className="text-base font-bold tracking-tight">{t.contact.formTitle}</p>
+                <p className="mt-1 text-sm text-zinc-500">{t.contact.formDesc}</p>
+                <label className="mt-5 block text-xs font-semibold">{lang === "id" ? "Nama" : "Name"}</label>
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder={t.contact.namePh}
+                  className="mt-1.5 w-full rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-950"
+                />
+                <label className="mt-4 block text-xs font-semibold">{lang === "id" ? "Pesan" : "Message"}</label>
+                <textarea
+                  value={msg}
+                  onChange={(e) => setMsg(e.target.value)}
+                  placeholder={t.contact.msgPh}
+                  rows={4}
+                  className="mt-1.5 w-full resize-none rounded-xl border border-zinc-200 bg-white px-3 py-2.5 text-sm outline-none transition placeholder:text-zinc-400 focus:border-zinc-950"
+                />
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  <a href={mailHref} className="rounded-full border border-zinc-300 px-4 py-2.5 text-center text-sm font-semibold transition hover:border-zinc-950">
+                    {t.contact.sendEmail}
+                  </a>
+                  <a href={waHref} target="_blank" rel="noreferrer" className="rounded-full bg-zinc-950 px-4 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-zinc-800">
+                    {t.contact.sendWA}
+                  </a>
+                </div>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      <footer className="border-t border-zinc-200 dark:border-zinc-800">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-6 text-[13px] text-zinc-500 sm:flex-row dark:text-zinc-400">
+      <footer className="border-t border-zinc-200">
+        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 px-6 py-6 text-[13px] text-zinc-500 sm:flex-row">
           <p>{t.footer.made}</p>
           <p>{t.footer.rights}</p>
-          <a href="#top" className="font-semibold hover:underline">↑ {t.footer.top}</a>
+          <a href="#top" className="font-semibold text-zinc-950 hover:underline">↑ {t.footer.top}</a>
         </div>
       </footer>
     </div>

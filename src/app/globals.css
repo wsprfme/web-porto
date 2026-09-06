@@ -1,15 +1,11 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
-
 :root {
-  --background: #fafafa;
+  --background: #ffffff;
   --foreground: #09090b;
-}
-
-.dark {
-  --background: #09090b;
-  --foreground: #fafafa;
+  --muted: #52525b;
+  --line: #e4e4e7;
+  --fill: #fafafa;
 }
 
 @theme inline {
@@ -33,21 +29,16 @@ body {
 }
 
 ::selection {
-  background: #059669;
+  background: #09090b;
   color: #fff;
-}
-
-/* Scroll progress */
-#scroll-progress {
-  transform-origin: 0 50%;
 }
 
 /* Reveal on scroll */
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(14px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
 }
@@ -65,39 +56,6 @@ body {
     transform: none;
     transition: none;
   }
-}
-
-/* Subtle grid backdrop for hero */
-.bg-grid {
-  background-image: linear-gradient(
-      to right,
-      rgb(0 0 0 / 0.05) 1px,
-      transparent 1px
-    ),
-    linear-gradient(to bottom, rgb(0 0 0 / 0.05) 1px, transparent 1px);
-  background-size: 28px 28px;
-}
-.dark .bg-grid {
-  background-image: linear-gradient(
-      to right,
-      rgb(255 255 255 / 0.06) 1px,
-      transparent 1px
-    ),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
-  background-size: 28px 28px;
-}
-
-.mask-fade-b {
-  -webkit-mask-image: radial-gradient(
-    ellipse 80% 70% at 50% 0%,
-    black 55%,
-    transparent 100%
-  );
-  mask-image: radial-gradient(
-    ellipse 80% 70% at 50% 0%,
-    black 55%,
-    transparent 100%
-  );
 }
 
 /* Print: only CV sheet */
