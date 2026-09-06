@@ -4,13 +4,17 @@ export const profile = {
   name: "Usman Ramadhan",
   initials: "UR",
   location: "Palembang, Indonesia",
-  email: "usman@gmail.com",
+  email: "usman@jolink.co.id",
   github: "https://github.com/wsprfme",
   githubHandle: "wsprfme",
   whatsapp: "https://wa.me/6281916848478",
   whatsappDisplay: "0819-1684-8478",
   jolink: "https://jolink.co.id",
   schoolSite: "https://smkn1bmr.sch.id",
+  school: {
+    id: "SMKN 1 Belitang Madang Raya",
+    en: "SMKN 1 Belitang Madang Raya",
+  },
   availability: {
     id: "Tersedia untuk full-time, freelance, dan kolaborasi",
     en: "Available for full-time, freelance, and collaboration",
@@ -35,6 +39,7 @@ export const dict = {
   id: {
     nav: {
       about: "Tentang",
+      education: "Pendidikan",
       skills: "Keahlian",
       experience: "Pengalaman",
       projects: "Proyek",
@@ -62,7 +67,7 @@ export const dict = {
       body1:
         "Saya Usman Ramadhan, developer fullstack dari Palembang. Keseharian saya di React dan Next.js dengan TypeScript untuk frontend, Node.js, Go, Python, dan PHP untuk backend, lalu deployment di VPS Linux memakai Docker dan Coolify.",
       body2:
-        "Yang sudah jalan: sistem SPMB untuk SMKN 1 Banyuasin yang dipakai pendaftar asli, Juara 3 LKS Web Technologies tingkat Provinsi Sumatera Selatan, dan Jolink, layanan hosting game dan bot yang saya operasikan sendiri.",
+        "Yang sudah jalan: sistem SPMB untuk SMKN 1 Belitang Madang Raya yang dipakai pendaftar asli, Juara 3 LKS Web Technologies tingkat Provinsi Sumatera Selatan, dan Jolink, layanan hosting game dan bot yang saya operasikan sendiri.",
       points: [
         { title: "Kerja rapi", desc: "Kode terstruktur dan mudah dilanjutkan developer lain." },
         { title: "Utamakan pengguna", desc: "Navigasi jelas, cepat dibuka di HP spesifikasi rendah." },
@@ -76,9 +81,31 @@ export const dict = {
         ["Kebiasaan", "Dokumentasi singkat, commit jelas, respon cepat"],
       ],
     },
+    education: {
+      eyebrow: "Pendidikan",
+      index: "02",
+      title: "Masih sekolah, sudah kerja.",
+      desc: "Status aktif dan rencana setelah lulus.",
+      photoCaption: "Foto formal",
+      photoNote: "Latar merah dihapus otomatis, siap dipakai untuk CV.",
+      statusTitle: "Status sekarang",
+      rows: [
+        ["Sekolah", "SMKN 1 Belitang Madang Raya"],
+        ["Jurusan", "TKJ — Teknik Komputer dan Jaringan, kelas 3 (aktif)"],
+        ["Fokus", "Jaringan, server Linux, dan web development"],
+        ["Target", "Lulus lalu lanjut ke Universitas Lampung atau Amikom Yogyakarta"],
+      ],
+      storyTitle: "Kenapa TKJ, bukan RPL?",
+      storyIcon: "/icons/growtopia.png",
+      story: [
+        "Semua bermula saat saya kelas 1 SMP dari game Growtopia. Setelah main cukup lama, muncul rasa penasaran: bagaimana sebenarnya sistem game seperti ini bekerja?",
+        "Saya ngulik sendiri sampai ketemu fakta menarik: Growtopia ternyata bisa dijalankan sebagai server custom sendiri (GTPS, Growtopia Private Server). Itu ranah ilegal dan tidak saya tekuni ke arah sana, tapi dari situlah saya pertama kali kenal konsep server, client, database, dan jaringan. Istilah yang awalnya asing pelan-pelan masuk akal.",
+        "Dari situ pilihan jurusan jadi jelas: saya butuh fondasi jaringan dan server, jadi TKJ pilihan yang masuk akal. Jurusan RPL sebenarnya ada, tapi sekolah yang membukanya jauh dari rumah. Ternyata keputusan itu tepat, bekal TKJ kepakai setiap hari saat mengelola VPS, jaringan, dan deployment untuk Jolink dan proyek klien.",
+      ],
+    },
     skills: {
       eyebrow: "Keahlian",
-      index: "02",
+      index: "03",
       title: "Peralatan yang saya pakai tiap hari.",
       desc: "Hanya yang benar-benar saya kuasai dan pernah saya bawa ke production.",
       groups: [
@@ -121,11 +148,11 @@ export const dict = {
     },
     experience: {
       eyebrow: "Pengalaman",
-      index: "03",
+      index: "04",
       title: "Tempat saya belajar paling banyak.",
       items: [
         {
-          period: "2024 — Sekarang",
+          period: "2025 — Sekarang",
           role: "Founder dan Developer",
           org: "Jolink — Layanan hosting game dan bot",
           bullets: [
@@ -136,9 +163,20 @@ export const dict = {
           tags: ["Operasional", "Linux", "Dukungan pelanggan"],
         },
         {
-          period: "2023 — 2024",
+          period: "2024 — Sekarang",
+          role: "Freelance Developer — Custom tools dan web",
+          org: "Klien via Telegram, Discord, dan komunitas",
+          bullets: [
+            "Mengerjakan pesanan custom tools dan website kecil dari pelanggan di Telegram, Discord, dan komunitas game.",
+            "Terbiasa mengubah permintaan awam jadi spesifikasi teknis, deal harga, revisi, dan serah terima.",
+            "Hasilnya dipakai langsung: tools automation, panel sederhana, dan landing page.",
+          ],
+          tags: ["Freelance", "Custom tools", "Remote"],
+        },
+        {
+          period: "2025 — Saat ini",
           role: "Fullstack Developer",
-          org: "SPMB SMKN 1 Banyuasin — Sistem penerimaan siswa",
+          org: "SPMB SMKN 1 Belitang Madang Raya — Sistem penerimaan siswa",
           bullets: [
             "Membangun website pendaftaran dari nol sampai bisa dipakai pendaftar asli.",
             "Isinya: formulir pendaftaran, rekap data, dan halaman informasi.",
@@ -148,7 +186,7 @@ export const dict = {
           link: "https://smkn1bmr.sch.id",
         },
         {
-          period: "2023",
+          period: "2026",
           role: "Finalis — Juara 3 Provinsi",
           org: "LKS Web Technologies — Sumatera Selatan",
           bullets: [
@@ -162,23 +200,23 @@ export const dict = {
     },
     projects: {
       eyebrow: "Proyek",
-      index: "04",
+      index: "05",
       title: "Dua yang paling menjelaskan cara saya kerja.",
       desc: "Satu bisnis yang berjalan, satu sistem yang dipakai publik. Keduanya live dan bisa dibuka sekarang.",
       items: [
         {
           name: "Jolink",
           tag: "Bisnis live",
-          meta: "jolink.co.id — 2024 sampai sekarang",
+          meta: "jolink.co.id — 2025 sampai sekarang",
           desc: "Layanan hosting game dan bot. Saya pegang semuanya: website order, setup server, dan support. Fokusnya sederhana: order gampang, server stabil, chat dibalas cepat.",
           stack: ["Linux VPS", "Panel hosting", "Billing", "Support"],
           link: "https://jolink.co.id",
           cta: "Buka website",
         },
         {
-          name: "SPMB SMKN 1 Banyuasin",
+          name: "SPMB SMKN 1 Belitang Madang Raya",
           tag: "Sistem live",
-          meta: "smkn1bmr.sch.id — 2023 sampai 2024",
+          meta: "smkn1bmr.sch.id — 2025 sampai saat ini",
           desc: "Sistem penerimaan murid baru yang menggantikan pendaftaran manual. Alur dibuat pendek, bahasa dibuat sederhana, halaman ringan dibuka di HP.",
           stack: ["Fullstack web", "Formulir", "Mobile-first"],
           link: "https://smkn1bmr.sch.id",
@@ -189,9 +227,9 @@ export const dict = {
     },
     achievement: {
       eyebrow: "Penghargaan",
-      index: "05",
+      index: "06",
       title: "Juara 3 LKS Web Technologies tingkat provinsi.",
-      desc: "Lomba Kompetensi Siswa SMK, bidang Web Technologies, tingkat Provinsi Sumatera Selatan tahun 2023.",
+      desc: "Lomba Kompetensi Siswa SMK, bidang Web Technologies, tingkat Provinsi Sumatera Selatan tahun 2026.",
       cardTitle: "Juara 3 — Web Technologies",
       cardDesc:
         "Bertanding mewakili kabupaten melawan peserta kabupaten dan kota se-Sumatera Selatan. Materi yang diujikan mencakup slicing tampilan, logika frontend, dan API backend.",
@@ -200,11 +238,11 @@ export const dict = {
     },
     contact: {
       eyebrow: "Kontak",
-      index: "06",
+      index: "07",
       title: "Mari terhubung.",
       desc: "Senang bisa diskusi soal peluang kerja, proyek freelance, atau sekadar tukar pikiran soal web. Silakan hubungi lewat kanal yang paling nyaman, saya usahakan balas cepat di jam kerja WIB.",
       cards: [
-        { label: "Email", value: "usman@gmail.com", href: "mailto:usman@gmail.com" },
+        { label: "Email", value: "usman@jolink.co.id", href: "mailto:usman@jolink.co.id" },
         { label: "WhatsApp", value: "0819-1684-8478", href: "https://wa.me/6281916848478" },
         { label: "GitHub", value: "@wsprfme", href: "https://github.com/wsprfme" },
         { label: "Lokasi", value: "Palembang, ID", href: "https://wa.me/6281916848478" },
@@ -225,6 +263,7 @@ export const dict = {
   en: {
     nav: {
       about: "About",
+      education: "Education",
       skills: "Skills",
       experience: "Experience",
       projects: "Projects",
@@ -252,7 +291,7 @@ export const dict = {
       body1:
         "I'm Usman Ramadhan, a fullstack developer from Palembang. My daily work is React and Next.js with TypeScript for frontend, Node.js, Go, Python, and PHP for backend, then deployment on Linux VPS with Docker and Coolify.",
       body2:
-        "Shipped so far: an admission system for SMKN 1 Banyuasin used by real applicants, 3rd place in Web Technologies at South Sumatra provincial LKS, and Jolink, a game and bot hosting service I run myself.",
+        "Shipped so far: an admission system for SMKN 1 Belitang Madang Raya used by real applicants, 3rd place in Web Technologies at South Sumatra provincial LKS, and Jolink, a game and bot hosting service I run myself.",
       points: [
         { title: "Tidy work", desc: "Structured code that other developers can continue." },
         { title: "User first", desc: "Clear navigation, fast on low-end phones." },
@@ -266,9 +305,31 @@ export const dict = {
         ["Habits", "Short docs, clear commits, fast replies"],
       ],
     },
+    education: {
+      eyebrow: "Education",
+      index: "02",
+      title: "Still in school, already working.",
+      desc: "Current status and plans after graduation.",
+      photoCaption: "Formal photo",
+      photoNote: "Red background removed automatically, ready for CV use.",
+      statusTitle: "Current status",
+      rows: [
+        ["School", "SMKN 1 Belitang Madang Raya"],
+        ["Major", "TKJ — Computer and Network Engineering, grade 3 (active)"],
+        ["Focus", "Networking, Linux servers, and web development"],
+        ["Target", "Graduate, then continue to Universitas Lampung or Amikom Yogyakarta"],
+      ],
+      storyTitle: "Why TKJ instead of RPL?",
+      storyIcon: "/icons/growtopia.png",
+      story: [
+        "It all started in 7th grade with the game Growtopia. After playing for a while, I got curious: how does a game system like this actually work?",
+        "I dug around on my own and found something interesting: Growtopia can actually run as its own custom server (GTPS, Growtopia Private Server). That area is illegal and not something I pursued, but it was my first encounter with servers, clients, databases, and networking. Terms that once sounded foreign slowly started to make sense.",
+        "That made the major choice clear: I needed networking and server fundamentals, so TKJ was the sensible pick. An RPL major did exist, but the school offering it was far from home. It turned out to be the right call, TKJ knowledge gets used every day when managing VPS, networks, and deployments for Jolink and client projects.",
+      ],
+    },
     skills: {
       eyebrow: "Skills",
-      index: "02",
+      index: "03",
       title: "Tools I use every day.",
       desc: "Only what I actually know and have taken to production.",
       groups: [
@@ -311,11 +372,11 @@ export const dict = {
     },
     experience: {
       eyebrow: "Experience",
-      index: "03",
+      index: "04",
       title: "Where I learned the most.",
       items: [
         {
-          period: "2024 — Present",
+          period: "2025 — Present",
           role: "Founder and Developer",
           org: "Jolink — Game and bot hosting",
           bullets: [
@@ -326,9 +387,20 @@ export const dict = {
           tags: ["Operations", "Linux", "Customer support"],
         },
         {
-          period: "2023 — 2024",
+          period: "2024 — Present",
+          role: "Freelance Developer — Custom tools and web",
+          org: "Clients via Telegram, Discord, and communities",
+          bullets: [
+            "Take orders for custom tools and small websites from customers on Telegram, Discord, and game communities.",
+            "Used to turning plain requests into specs, agreeing on price, revisions, and handover.",
+            "Output in real use: automation tools, simple panels, and landing pages.",
+          ],
+          tags: ["Freelance", "Custom tools", "Remote"],
+        },
+        {
+          period: "2025 — Present",
           role: "Fullstack Developer",
-          org: "SMKN 1 Banyuasin admission system",
+          org: "SMKN 1 Belitang Madang Raya admission system",
           bullets: [
             "Built the registration website from zero until real applicants used it.",
             "Scope: registration form, data recap, and info pages.",
@@ -338,7 +410,7 @@ export const dict = {
           link: "https://smkn1bmr.sch.id",
         },
         {
-          period: "2023",
+          period: "2026",
           role: "Finalist — 3rd place provincial",
           org: "LKS Web Technologies — South Sumatra",
           bullets: [
@@ -352,23 +424,23 @@ export const dict = {
     },
     projects: {
       eyebrow: "Projects",
-      index: "04",
+      index: "05",
       title: "Two that explain how I work.",
       desc: "One running business, one system used by the public. Both live and openable now.",
       items: [
         {
           name: "Jolink",
           tag: "Live business",
-          meta: "jolink.co.id — 2024 to present",
+          meta: "jolink.co.id — 2025 to present",
           desc: "Game and bot hosting service. I handle everything: order site, server setup, and support. The focus is simple: easy order, stable server, fast replies.",
           stack: ["Linux VPS", "Hosting panel", "Billing", "Support"],
           link: "https://jolink.co.id",
           cta: "Open website",
         },
         {
-          name: "SMKN 1 Banyuasin admission",
+          name: "SMKN 1 Belitang Madang Raya admission",
           tag: "Live system",
-          meta: "smkn1bmr.sch.id — 2023 to 2024",
+          meta: "smkn1bmr.sch.id — 2025 to present",
           desc: "Admission system replacing manual registration. Short flow, plain language, light pages for phones.",
           stack: ["Fullstack web", "Forms", "Mobile-first"],
           link: "https://smkn1bmr.sch.id",
@@ -379,9 +451,9 @@ export const dict = {
     },
     achievement: {
       eyebrow: "Award",
-      index: "05",
+      index: "06",
       title: "3rd place, provincial Web Technologies.",
-      desc: "Vocational student competency contest, Web Technologies field, South Sumatra Province 2023.",
+      desc: "Vocational student competency contest, Web Technologies field, South Sumatra Province 2026.",
       cardTitle: "3rd place — Web Technologies",
       cardDesc:
         "Competed for the regency against cities and regencies across South Sumatra. Tested areas included layout slicing, frontend logic, and backend API.",
@@ -390,11 +462,11 @@ export const dict = {
     },
     contact: {
       eyebrow: "Contact",
-      index: "06",
+      index: "07",
       title: "Let's connect.",
       desc: "Happy to chat about job opportunities, freelance projects, or just web in general. Reach me on whichever channel suits you, I reply fast during working hours WIB.",
       cards: [
-        { label: "Email", value: "usman@gmail.com", href: "mailto:usman@gmail.com" },
+        { label: "Email", value: "usman@jolink.co.id", href: "mailto:usman@jolink.co.id" },
         { label: "WhatsApp", value: "0819-1684-8478", href: "https://wa.me/6281916848478" },
         { label: "GitHub", value: "@wsprfme", href: "https://github.com/wsprfme" },
         { label: "Location", value: "Palembang, ID", href: "https://wa.me/6281916848478" },

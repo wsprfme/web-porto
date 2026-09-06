@@ -79,7 +79,7 @@ export default function Portfolio() {
   }, []);
 
   useEffect(() => {
-    const ids = ["top", "about", "skills", "experience", "projects", "achievement", "contact"];
+    const ids = ["top", "about", "education", "skills", "experience", "projects", "achievement", "contact"];
     const obs = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -109,6 +109,7 @@ export default function Portfolio() {
 
   const sections = [
     { id: "about", label: t.nav.about },
+    { id: "education", label: t.nav.education },
     { id: "skills", label: t.nav.skills },
     { id: "experience", label: t.nav.experience },
     { id: "projects", label: t.nav.projects },
@@ -131,33 +132,40 @@ export default function Portfolio() {
             : "border-b border-transparent bg-white/70 backdrop-blur-md"
         }`}
       >
-        <div className="mx-auto flex h-[68px] max-w-6xl items-center justify-between gap-6 px-6">
-          <a href="#top" className="group flex shrink-0 items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-950 text-[11px] font-bold tracking-wide text-white transition group-hover:scale-105">
-              {profile.initials}
-            </span>
-            <span className="hidden text-[15px] font-semibold tracking-tight sm:block">
-              {profile.name}
-            </span>
-          </a>
+        <div className="mx-auto flex h-[68px] max-w-6xl items-center gap-4 px-4 sm:px-6">
+          <div className="flex flex-1 items-center lg:hidden">
+            <button
+              onClick={() => setMenuOpen((v) => !v)}
+              className="flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-zinc-100"
+              aria-label="Menu"
+            >
+              {menuOpen ? (
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 6l12 12M18 6 6 18" /></svg>
+              ) : (
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+              )}
+            </button>
+          </div>
 
-          <nav className="hidden items-center gap-0.5 rounded-full border border-zinc-200/70 bg-white/70 p-1 lg:flex">
-            {sections.map((s) => (
-              <a
-                key={s.id}
-                href={`#${s.id}`}
-                className={`rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-all duration-200 ${
-                  active === s.id
-                    ? "bg-zinc-950 text-white"
-                    : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950"
-                }`}
-              >
-                {s.label}
-              </a>
-            ))}
+          <nav className="hidden flex-1 items-center justify-center lg:flex">
+            <div className="flex items-center gap-0.5 rounded-full border border-zinc-200/70 bg-white/70 p-1">
+              {sections.map((s) => (
+                <a
+                  key={s.id}
+                  href={`#${s.id}`}
+                  className={`rounded-full px-3.5 py-1.5 text-[13px] font-medium whitespace-nowrap transition-all duration-200 ${
+                    active === s.id
+                      ? "bg-zinc-950 text-white"
+                      : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950"
+                  }`}
+                >
+                  {s.label}
+                </a>
+              ))}
+            </div>
           </nav>
 
-          <div className="flex shrink-0 items-center gap-1">
+          <div className="flex flex-1 items-center justify-end gap-1">
             <button
               onClick={toggleLang}
               className="flex items-center gap-1.5 rounded-full px-2.5 py-2 text-xs font-semibold text-zinc-500 transition hover:text-zinc-950"
@@ -177,21 +185,10 @@ export default function Portfolio() {
             </button>
             <a
               href="#contact"
-              className="ml-1 hidden rounded-full bg-zinc-950 px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-zinc-800 md:block"
+              className="ml-1 rounded-full bg-zinc-950 px-4 py-2 text-[13px] font-semibold text-white transition hover:bg-zinc-800"
             >
               {t.nav.contactCta}
             </a>
-            <button
-              onClick={() => setMenuOpen((v) => !v)}
-              className="flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-zinc-100 lg:hidden"
-              aria-label="Menu"
-            >
-              {menuOpen ? (
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 6l12 12M18 6 6 18" /></svg>
-              ) : (
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
-              )}
-            </button>
           </div>
         </div>
         {menuOpen && (
@@ -287,8 +284,14 @@ export default function Portfolio() {
                 <div className="p-6 pb-5">
                   <div className="flex items-start gap-4">
                     <div className="relative shrink-0">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-950 text-sm font-bold tracking-wide text-white">
-                        {profile.initials}
+                      <div className="h-14 w-14 overflow-hidden rounded-2xl bg-zinc-100">
+                        <Image
+                          src="/profile.png"
+                          alt={profile.name}
+                          width={112}
+                          height={112}
+                          className="h-full w-full object-cover object-top"
+                        />
                       </div>
                       <span className="absolute -right-0.5 -bottom-0.5 h-3.5 w-3.5 rounded-full border-2 border-white bg-zinc-950" title="Available" />
                     </div>
@@ -406,6 +409,71 @@ export default function Portfolio() {
               </dl>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* EDUCATION */}
+      <section id="education" className="border-t border-zinc-200 bg-zinc-50/60">
+        <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
+          <SectionHead index={t.education.index} eyebrow={t.education.eyebrow} title={t.education.title} desc={t.education.desc} />
+          <div className="mt-8 grid gap-8 lg:grid-cols-[0.9fr_1.4fr] lg:items-start">
+            <Reveal delay={80}>
+              <figure className="overflow-hidden rounded-3xl border border-zinc-200 bg-white">
+                <div className="bg-zinc-100">
+                  <Image
+                    src="/profile.png"
+                    alt={`${profile.name} — ${t.education.photoCaption}`}
+                    width={800}
+                    height={820}
+                    className="mx-auto h-auto w-full max-w-sm object-cover object-top"
+                  />
+                </div>
+                <figcaption className="flex items-center justify-between gap-3 border-t border-zinc-100 px-5 py-4">
+                  <span className="text-sm font-semibold">{t.education.photoCaption}</span>
+                  <span className="text-xs text-zinc-500">{t.education.photoNote}</span>
+                </figcaption>
+              </figure>
+            </Reveal>
+            <div>
+              <Reveal delay={120}>
+                <div className="rounded-2xl border border-zinc-200 bg-white p-6">
+                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
+                    {t.education.statusTitle}
+                  </p>
+                  <dl className="mt-4 divide-y divide-zinc-200">
+                    {t.education.rows.map(([k, v]) => (
+                      <div key={k} className="py-3 first:pt-0 last:pb-0">
+                        <dt className="text-xs text-zinc-500">{k}</dt>
+                        <dd className="mt-1 text-sm font-medium leading-6">{v}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              </Reveal>
+              <Reveal delay={180}>
+                <div className="mt-4 rounded-2xl border border-zinc-200 bg-white p-6">
+                  <div className="flex items-center gap-3">
+                    <Image
+                      src={t.education.storyIcon}
+                      alt="Growtopia"
+                      width={28}
+                      height={28}
+                      unoptimized
+                      className="h-7 w-7 rounded-lg"
+                    />
+                    <p className="text-sm font-bold tracking-tight">{t.education.storyTitle}</p>
+                  </div>
+                  <div className="mt-4 space-y-3">
+                    {t.education.story.map((p) => (
+                      <p key={p.slice(0, 24)} className="text-sm leading-6 text-zinc-600">
+                        {p}
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+          </div>
         </div>
       </section>
 

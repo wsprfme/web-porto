@@ -11,7 +11,7 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Usman Ramadhan - Fullstack Web Developer",
   description:
-    "Portfolio Usman Ramadhan dari Palembang: Fullstack Web Developer. Membangun SPMB SMKN 1 Banyuasin, Juara 3 LKS Web Technologies Provinsi Sumatera Selatan, dan Jolink layanan hosting game dan bot.",
+    "Portfolio Usman Ramadhan dari Palembang: Fullstack Web Developer. Membangun SPMB SMKN 1 Belitang Madang Raya, Juara 3 LKS Web Technologies Provinsi Sumatera Selatan 2026, dan Jolink layanan hosting game dan bot.",
   keywords: ["Usman Ramadhan", "Fullstack Developer", "Palembang", "Jolink", "Next.js", "Portfolio"],
   authors: [{ name: "Usman Ramadhan" }],
   openGraph: {
@@ -32,17 +32,20 @@ export default function RootLayout({
         {/* Printable CV sheet */}
         <div id="print-cv">
           <h1>Usman Ramadhan - Fullstack Web Developer</h1>
-          <p>Palembang, Indonesia - usman@gmail.com - 0819-1684-8478 - github.com/wsprfme</p>
+          <p>Palembang, Indonesia - usman@jolink.co.id - 0819-1684-8478 - github.com/wsprfme</p>
           <hr />
           <p>
-            Fullstack developer dari Palembang. Membangun sistem SPMB SMKN 1 Banyuasin,
-            Juara 3 LKS Web Technologies Provinsi Sumatera Selatan, dan menjalankan Jolink layanan hosting game dan bot.
+            Fullstack developer dari Palembang. Membangun sistem SPMB SMKN 1 Belitang Madang Raya,
+            Juara 3 LKS Web Technologies Provinsi Sumatera Selatan 2026, dan menjalankan Jolink layanan hosting game dan bot.
           </p>
+          <h2>Pendidikan</h2>
+          <p>SMKN 1 Belitang Madang Raya — TKJ, kelas 3 (aktif). Target: Universitas Lampung / Amikom Yogyakarta.</p>
           <h2>Pengalaman</h2>
           <ul>
-            <li>Founder dan Developer - Jolink (2024 - Sekarang)</li>
-            <li>Fullstack Developer - SPMB SMKN 1 Banyuasin (2023 - 2024)</li>
-            <li>Juara 3 LKS Web Technologies Provinsi Sumatera Selatan (2023)</li>
+            <li>Founder dan Developer - Jolink (2025 - Sekarang)</li>
+            <li>Freelance Developer custom tools dan web via Telegram/Discord (2024 - Sekarang)</li>
+            <li>Fullstack Developer - SPMB SMKN 1 Belitang Madang Raya (2025 - Saat ini)</li>
+            <li>Juara 3 LKS Web Technologies Provinsi Sumatera Selatan (2026)</li>
           </ul>
           <h2>Keahlian</h2>
           <p>Frontend: React, Next.js, TypeScript, Tailwind CSS, PHP. Backend: Node.js, Go, Python, REST API, MySQL. Ops: Git, Docker, Coolify, Linux VPS, Nginx.</p>
