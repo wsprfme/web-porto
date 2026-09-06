@@ -375,42 +375,39 @@ export default function Portfolio() {
       {/* ABOUT: tentang + pendidikan digabung */}
       <section id="about" className="mx-auto max-w-5xl scroll-mt-24 px-6 py-16 sm:py-20">
         <SectionHead index={t.about.index} eyebrow={t.about.eyebrow} title={t.about.title} desc={t.about.desc} />
-        <div className="mt-8 grid gap-8 lg:grid-cols-[0.9fr_1.4fr] lg:items-start">
+        <div className="mt-10 grid gap-10 lg:grid-cols-[300px_1fr] lg:gap-12">
           <Reveal delay={80}>
             <figure className="overflow-hidden rounded-3xl border border-zinc-200 bg-white lg:sticky lg:top-24">
-              <div className="bg-zinc-100">
+              <div className="bg-zinc-100 px-8 pt-8">
                 <Image
                   src="/profile.png"
                   alt={`${profile.name} — ${t.about.photoCaption}`}
-                  width={800}
-                  height={880}
-                  className="mx-auto h-auto w-full max-w-sm object-cover object-top"
+                  width={600}
+                  height={660}
+                  className="mx-auto h-auto w-full object-cover object-top"
                 />
               </div>
-              <figcaption className="flex items-center justify-between gap-3 border-t border-zinc-100 px-5 py-4">
-                <span className="text-sm font-semibold">{t.about.photoCaption}</span>
-                <span className="text-xs text-zinc-500">{t.about.photoNote}</span>
+              <figcaption className="border-t border-zinc-100 px-5 py-4 text-center">
+                <p className="text-sm font-semibold">{profile.name}</p>
+                <p className="mt-0.5 text-xs text-zinc-500">{t.about.photoNote}</p>
               </figcaption>
             </figure>
           </Reveal>
           <div>
             <Reveal delay={100}>
-              <div className="space-y-4">
-                {t.about.intro.map((p) => (
-                  <p key={p.slice(0, 24)} className="text-[15px] leading-7 text-zinc-600">
-                    {p}
-                  </p>
-                ))}
+              <div>
+                <p className="text-[17px] leading-8 text-zinc-800">{t.about.intro[0]}</p>
+                <p className="mt-4 text-[15px] leading-7 text-zinc-600">{t.about.intro[1]}</p>
               </div>
             </Reveal>
             <Reveal delay={140}>
-              <div className="mt-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-6">
+              <div className="mt-8">
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
                   {t.about.factsTitle}
                 </p>
-                <dl className="mt-4 divide-y divide-zinc-200">
+                <dl className="mt-4 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-200 sm:grid-cols-2">
                   {t.about.rows.map(([k, v]) => (
-                    <div key={k} className="py-3 first:pt-0 last:pb-0">
+                    <div key={k} className="bg-white p-5">
                       <dt className="text-xs text-zinc-500">{k}</dt>
                       <dd className="mt-1 text-sm font-medium leading-6">{v}</dd>
                     </div>
@@ -420,12 +417,15 @@ export default function Portfolio() {
             </Reveal>
           </div>
         </div>
-        <div className="mt-8 grid gap-4 lg:grid-cols-2">
+        <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-12">
           <Reveal delay={80}>
-            <div className="h-full rounded-2xl border border-zinc-200 bg-white p-6">
-              <div className="divide-y divide-zinc-200">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
+                {t.about.pointsTitle}
+              </p>
+              <div className="mt-4 divide-y divide-zinc-200 border-y border-zinc-200">
                 {t.about.points.map((p, i) => (
-                  <div key={p.title} className="flex gap-4 py-4 first:pt-0 last:pb-0">
+                  <div key={p.title} className="flex gap-4 py-5">
                     <span className="font-mono text-xs text-zinc-400">0{i + 1}</span>
                     <div>
                       <p className="text-sm font-semibold">{p.title}</p>
@@ -437,21 +437,21 @@ export default function Portfolio() {
             </div>
           </Reveal>
           <Reveal delay={140}>
-            <div className="h-full rounded-2xl bg-zinc-950 p-6 text-white sm:p-7">
+            <div className="h-full rounded-3xl border border-zinc-200 bg-zinc-50 p-6 sm:p-8">
               <div className="flex items-center gap-3">
                 <Image
                   src={t.about.storyIcon}
                   alt="Growtopia"
-                  width={28}
-                  height={28}
+                  width={32}
+                  height={32}
                   unoptimized
-                  className="h-7 w-7 rounded-lg"
+                  className="h-8 w-8 rounded-lg"
                 />
-                <p className="text-sm font-bold tracking-tight">{t.about.storyTitle}</p>
+                <p className="text-base font-bold tracking-tight">{t.about.storyTitle}</p>
               </div>
-              <div className="mt-4 space-y-3">
+              <div className="mt-5 space-y-4 border-l-2 border-zinc-300 pl-5">
                 {t.about.story.map((p) => (
-                  <p key={p.slice(0, 24)} className="text-sm leading-6 text-zinc-300">
+                  <p key={p.slice(0, 24)} className="text-sm leading-7 text-zinc-600">
                     {p}
                   </p>
                 ))}
