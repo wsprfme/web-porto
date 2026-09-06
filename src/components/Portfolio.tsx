@@ -179,19 +179,7 @@ export default function Portfolio() {
       {/* HERO */}
       <section id="top" className="pt-28 pb-16 sm:pt-36 sm:pb-20">
         <div className="mx-auto max-w-5xl px-6">
-          <Reveal>
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-zinc-200 bg-white px-3.5 py-1.5 text-xs text-zinc-600">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-zinc-950 opacity-30" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-zinc-950" />
-              </span>
-              <span className="font-medium">{t.hero.badge}</span>
-              <span className="text-zinc-300">/</span>
-              <span>{profile.location}</span>
-            </div>
-          </Reveal>
-
-          <div className="mt-8 grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:items-start">
+          <div className="grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:items-start">
             <div>
               <Reveal delay={60}>
                 <p className="text-sm font-medium text-zinc-500">{t.hero.greeting},</p>
@@ -232,19 +220,6 @@ export default function Portfolio() {
                     {profile.githubHandle}
                   </a>
                 </div>
-              </Reveal>
-              <Reveal delay={240}>
-                <dl className="mt-10 grid max-w-xl grid-cols-3">
-                  {t.hero.stats.map((s, i) => (
-                    <div
-                      key={s.label}
-                      className={i === 0 ? "pr-6" : "border-l border-zinc-200 px-6"}
-                    >
-                      <dd className="text-2xl font-bold tracking-tight">{s.value}</dd>
-                      <dt className="mt-1 text-xs leading-5 text-zinc-500">{s.label}</dt>
-                    </div>
-                  ))}
-                </dl>
               </Reveal>
             </div>
 
