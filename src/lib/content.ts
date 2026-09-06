@@ -65,7 +65,6 @@ export const dict = {
       title: "Siswa SMK yang berkembang lewat proyek dunia nyata.",
       desc: "Saya Usman Ramadhan, berdomisili di Palembang. Saat ini menempuh pendidikan kelas 3 TKJ di SMKN 1 Belitang Madang Raya, sambil mengelola Jolink dan mengerjakan berbagai proyek freelance.",
       photoCaption: "Foto formal",
-      photoNote: "Background sudah transparan.",
       intro: [
         "Waktu harian saya terbagi dua: pagi hingga siang fokus sekolah, sisanya mengeksekusi kode. Tech stack utama saya mencakup React dan Next.js dengan TypeScript di frontend, serta Node.js, Go, Python, dan PHP di backend, yang kemudian saya deploy ke VPS Linux menggunakan Docker dan Coolify.",
         "Patokan saya sederhana: karya harus benar-benar digunakan oleh pengguna nyata. Mulai dari Sistem SPMB sekolah yang aktif diisi pendaftar, raihan Juara 3 LKS Web Technologies Tingkat Provinsi Sumatera Selatan 2026, platform Jolink dengan pengguna aktif harian, hingga bot dan tools kustom pesanan di Telegram dan Discord.",
@@ -277,7 +276,6 @@ export const dict = {
       title: "A vocational student growing through real-world projects.",
       desc: "I'm Usman Ramadhan, based in Palembang. Currently in grade 3 of TKJ at SMKN 1 Belitang Madang Raya, while running Jolink and taking on freelance projects.",
       photoCaption: "Formal photo",
-      photoNote: "Background already transparent.",
       intro: [
         "My days split in two: mornings to afternoons for school, the rest for shipping code. My main stack is React and Next.js with TypeScript on the frontend, plus Node.js, Go, Python, and PHP on the backend, deployed to Linux VPS with Docker and Coolify.",
         "My benchmark is simple: work must be genuinely used by real users. From the school SPMB system filled in by actual applicants, 3rd place in Web Technologies at the 2026 South Sumatra provincial LKS, the Jolink platform with daily active users, to custom bots and tools ordered via Telegram and Discord.",

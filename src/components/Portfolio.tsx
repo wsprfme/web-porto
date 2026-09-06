@@ -389,7 +389,6 @@ export default function Portfolio() {
               </div>
               <figcaption className="border-t border-zinc-100 px-5 py-4 text-center">
                 <p className="text-sm font-semibold">{profile.name}</p>
-                <p className="mt-0.5 text-xs text-zinc-500">{t.about.photoNote}</p>
               </figcaption>
             </figure>
           </Reveal>
