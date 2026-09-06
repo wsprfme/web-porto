@@ -39,7 +39,6 @@ export const dict = {
   id: {
     nav: {
       about: "Tentang",
-      education: "Pendidikan",
       skills: "Keahlian",
       experience: "Pengalaman",
       projects: "Proyek",
@@ -63,49 +62,37 @@ export const dict = {
     about: {
       eyebrow: "Tentang",
       index: "01",
-      title: "Fokus ke yang dipakai, bukan yang ramai.",
-      body1:
-        "Saya Usman Ramadhan, developer fullstack dari Palembang. Keseharian saya di React dan Next.js dengan TypeScript untuk frontend, Node.js, Go, Python, dan PHP untuk backend, lalu deployment di VPS Linux memakai Docker dan Coolify.",
-      body2:
-        "Yang sudah jalan: sistem SPMB untuk SMKN 1 Belitang Madang Raya yang dipakai pendaftar asli, Juara 3 LKS Web Technologies tingkat Provinsi Sumatera Selatan, dan Jolink, layanan hosting game dan bot yang saya operasikan sendiri.",
-      points: [
-        { title: "Kerja rapi", desc: "Kode terstruktur dan mudah dilanjutkan developer lain." },
-        { title: "Utamakan pengguna", desc: "Navigasi jelas, cepat dibuka di HP spesifikasi rendah." },
-        { title: "Terbiasa operasional", desc: "Deploy, cek uptime, dan balas chat pelanggan." },
-      ],
-      cardTitle: "Data singkat",
-      cardRows: [
-        ["Lokasi", "Palembang, Indonesia (WIB, siap remote)"],
-        ["Fokus", "Website company profile, sistem internal, SaaS kecil"],
-        ["Bahasa", "Indonesia (aktif), Inggris (teknis)"],
-        ["Kebiasaan", "Dokumentasi singkat, commit jelas, respon cepat"],
-      ],
-    },
-    education: {
-      eyebrow: "Pendidikan",
-      index: "02",
-      title: "Masih sekolah, sudah kerja.",
-      desc: "Status aktif dan rencana setelah lulus.",
+      title: "Siswa kelas 3 yang belajar dari proyek beneran.",
+      desc: "Saya Usman Ramadhan dari Palembang. Sekarang kelas 3 TKJ di SMKN 1 Belitang Madang Raya, sambil jalanin Jolink dan ngerjain orderan freelance.",
       photoCaption: "Foto formal",
-      photoNote: "Latar merah dihapus otomatis, siap dipakai untuk CV.",
-      statusTitle: "Status sekarang",
+      photoNote: "Background sudah transparan.",
+      intro: [
+        "Hari saya kebagi dua: pagi sampai siang sekolah, sisanya ngoding. Pegangan utama React dan Next.js dengan TypeScript di frontend, Node.js, Go, Python, dan PHP di backend, terus deploy ke VPS Linux pakai Docker dan Coolify.",
+        "Patokan saya sederhana: kerjaan harus kelihatan dipakai orang. Sistem SPMB sekolah yang diisi pendaftar asli, Juara 3 LKS Web Technologies provinsi Sumatera Selatan 2026, Jolink yang tiap hari ada pelanggannya, plus tools pesanan dari Telegram dan Discord.",
+      ],
+      factsTitle: "Fakta singkat",
       rows: [
         ["Sekolah", "SMKN 1 Belitang Madang Raya"],
-        ["Jurusan", "TKJ — Teknik Komputer dan Jaringan, kelas 3 (aktif)"],
-        ["Fokus", "Jaringan, server Linux, dan web development"],
+        ["Status", "Kelas 3 TKJ — aktif"],
+        ["Lokasi", "Palembang, Indonesia (WIB, siap remote)"],
         ["Target", "Lulus lalu lanjut ke Universitas Lampung atau Amikom Yogyakarta"],
+      ],
+      points: [
+        { title: "Rapi sejak awal", desc: "Struktur folder jelas, commit gampang dibaca, gampang dilanjutin orang lain." },
+        { title: "Mikirin HP kentang", desc: "Halaman ringan, alur pendek, tombol gampang dipencet." },
+        { title: "Berani operasional", desc: "Deploy sendiri, pantau uptime, balas chat pelanggan sendiri." },
       ],
       storyTitle: "Kenapa TKJ, bukan RPL?",
       storyIcon: "/icons/growtopia.png",
       story: [
-        "Semua bermula saat saya kelas 1 SMP dari game Growtopia. Setelah main cukup lama, muncul rasa penasaran: bagaimana sebenarnya sistem game seperti ini bekerja?",
-        "Saya ngulik sendiri sampai ketemu fakta menarik: Growtopia ternyata bisa dijalankan sebagai server custom sendiri (GTPS, Growtopia Private Server). Itu ranah ilegal dan tidak saya tekuni ke arah sana, tapi dari situlah saya pertama kali kenal konsep server, client, database, dan jaringan. Istilah yang awalnya asing pelan-pelan masuk akal.",
-        "Dari situ pilihan jurusan jadi jelas: saya butuh fondasi jaringan dan server, jadi TKJ pilihan yang masuk akal. Jurusan RPL sebenarnya ada, tapi sekolah yang membukanya jauh dari rumah. Ternyata keputusan itu tepat, bekal TKJ kepakai setiap hari saat mengelola VPS, jaringan, dan deployment untuk Jolink dan proyek klien.",
+        "Awalnya cuma iseng: kelas 1 SMP saya main Growtopia terus. Lama-lama muncul pertanyaan yang nggak hilang-hilang, game kayak gini sebenarnya jalan pakai apa di belakangnya?",
+        "Saya cari tahu sendiri dan nemu satu fakta yang bikin melek: Growtopia bisa dijalankan sebagai server racikan sendiri (GTPS). Itu wilayah ilegal dan nggak saya terusin ke sana, tapi dari situ saya kenal server, client, database, dan jaringan untuk pertama kali. Istilah yang tadinya asing satu-satu jadi masuk akal.",
+        "Waktu milih SMK, jawabannya udah jelas: saya butuh fondasi jaringan dan server, jadi TKJ. RPL memang ada, tapi sekolahnya jauh dari rumah. Belakangan kebukti pilihannya bener, ilmu TKJ kepakai tiap hari buat ngurus VPS, jaringan, dan deployment Jolink sama proyek klien.",
       ],
     },
     skills: {
       eyebrow: "Keahlian",
-      index: "03",
+      index: "02",
       title: "Peralatan yang saya pakai tiap hari.",
       desc: "Hanya yang benar-benar saya kuasai dan pernah saya bawa ke production.",
       groups: [
@@ -148,7 +135,7 @@ export const dict = {
     },
     experience: {
       eyebrow: "Pengalaman",
-      index: "04",
+      index: "03",
       title: "Tempat saya belajar paling banyak.",
       items: [
         {
@@ -200,7 +187,7 @@ export const dict = {
     },
     projects: {
       eyebrow: "Proyek",
-      index: "05",
+      index: "04",
       title: "Dua yang paling menjelaskan cara saya kerja.",
       desc: "Satu bisnis yang berjalan, satu sistem yang dipakai publik. Keduanya live dan bisa dibuka sekarang.",
       items: [
@@ -227,7 +214,7 @@ export const dict = {
     },
     achievement: {
       eyebrow: "Penghargaan",
-      index: "06",
+      index: "05",
       title: "Juara 3 LKS Web Technologies tingkat provinsi.",
       desc: "Lomba Kompetensi Siswa SMK, bidang Web Technologies, tingkat Provinsi Sumatera Selatan tahun 2026.",
       cardTitle: "Juara 3 — Web Technologies",
@@ -238,7 +225,7 @@ export const dict = {
     },
     contact: {
       eyebrow: "Kontak",
-      index: "07",
+      index: "06",
       title: "Mari terhubung.",
       desc: "Senang bisa diskusi soal peluang kerja, proyek freelance, atau sekadar tukar pikiran soal web. Silakan hubungi lewat kanal yang paling nyaman, saya usahakan balas cepat di jam kerja WIB.",
       cards: [
@@ -263,7 +250,6 @@ export const dict = {
   en: {
     nav: {
       about: "About",
-      education: "Education",
       skills: "Skills",
       experience: "Experience",
       projects: "Projects",
@@ -287,37 +273,25 @@ export const dict = {
     about: {
       eyebrow: "About",
       index: "01",
-      title: "Focused on what gets used, not what is hyped.",
-      body1:
-        "I'm Usman Ramadhan, a fullstack developer from Palembang. My daily work is React and Next.js with TypeScript for frontend, Node.js, Go, Python, and PHP for backend, then deployment on Linux VPS with Docker and Coolify.",
-      body2:
-        "Shipped so far: an admission system for SMKN 1 Belitang Madang Raya used by real applicants, 3rd place in Web Technologies at South Sumatra provincial LKS, and Jolink, a game and bot hosting service I run myself.",
-      points: [
-        { title: "Tidy work", desc: "Structured code that other developers can continue." },
-        { title: "User first", desc: "Clear navigation, fast on low-end phones." },
-        { title: "Ops ready", desc: "Deploy, check uptime, and answer customer chats." },
-      ],
-      cardTitle: "Quick facts",
-      cardRows: [
-        ["Location", "Palembang, Indonesia (WIB, remote-ready)"],
-        ["Focus", "Company sites, internal tools, small SaaS"],
-        ["Languages", "Indonesian (fluent), English (technical)"],
-        ["Habits", "Short docs, clear commits, fast replies"],
-      ],
-    },
-    education: {
-      eyebrow: "Education",
-      index: "02",
-      title: "Still in school, already working.",
-      desc: "Current status and plans after graduation.",
+      title: "A grade-3 student learning from real projects.",
+      desc: "I'm Usman Ramadhan from Palembang. Currently grade 3 in TKJ at SMKN 1 Belitang Madang Raya, while running Jolink and taking freelance orders.",
       photoCaption: "Formal photo",
-      photoNote: "Red background removed automatically, ready for CV use.",
-      statusTitle: "Current status",
+      photoNote: "Background already transparent.",
+      intro: [
+        "My days split in two: school from morning to afternoon, coding after that. Main stack is React and Next.js with TypeScript on the frontend, Node.js, Go, Python, and PHP on the backend, deployed to Linux VPS with Docker and Coolify.",
+        "My benchmark is simple: work should be visibly used by people. A school admission system filled in by real applicants, 3rd place in Web Technologies at the 2026 South Sumatra provincial LKS, Jolink with daily customers, plus ordered tools from Telegram and Discord.",
+      ],
+      factsTitle: "Quick facts",
       rows: [
         ["School", "SMKN 1 Belitang Madang Raya"],
-        ["Major", "TKJ — Computer and Network Engineering, grade 3 (active)"],
-        ["Focus", "Networking, Linux servers, and web development"],
+        ["Status", "Grade 3 TKJ — active"],
+        ["Location", "Palembang, Indonesia (WIB, remote-ready)"],
         ["Target", "Graduate, then continue to Universitas Lampung or Amikom Yogyakarta"],
+      ],
+      points: [
+        { title: "Tidy from the start", desc: "Clear folder structure, readable commits, easy for others to continue." },
+        { title: "Built for low-end phones", desc: "Light pages, short flows, buttons easy to tap." },
+        { title: "Not afraid of ops", desc: "Deploy myself, watch uptime, reply to customers myself." },
       ],
       storyTitle: "Why TKJ instead of RPL?",
       storyIcon: "/icons/growtopia.png",
@@ -329,7 +303,7 @@ export const dict = {
     },
     skills: {
       eyebrow: "Skills",
-      index: "03",
+      index: "02",
       title: "Tools I use every day.",
       desc: "Only what I actually know and have taken to production.",
       groups: [
@@ -372,7 +346,7 @@ export const dict = {
     },
     experience: {
       eyebrow: "Experience",
-      index: "04",
+      index: "03",
       title: "Where I learned the most.",
       items: [
         {
@@ -424,7 +398,7 @@ export const dict = {
     },
     projects: {
       eyebrow: "Projects",
-      index: "05",
+      index: "04",
       title: "Two that explain how I work.",
       desc: "One running business, one system used by the public. Both live and openable now.",
       items: [
@@ -451,7 +425,7 @@ export const dict = {
     },
     achievement: {
       eyebrow: "Award",
-      index: "06",
+      index: "05",
       title: "3rd place, provincial Web Technologies.",
       desc: "Vocational student competency contest, Web Technologies field, South Sumatra Province 2026.",
       cardTitle: "3rd place — Web Technologies",
@@ -462,7 +436,7 @@ export const dict = {
     },
     contact: {
       eyebrow: "Contact",
-      index: "07",
+      index: "06",
       title: "Let's connect.",
       desc: "Happy to chat about job opportunities, freelance projects, or just web in general. Reach me on whichever channel suits you, I reply fast during working hours WIB.",
       cards: [

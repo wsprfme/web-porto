@@ -79,7 +79,7 @@ export default function Portfolio() {
   }, []);
 
   useEffect(() => {
-    const ids = ["top", "about", "education", "skills", "experience", "projects", "achievement", "contact"];
+    const ids = ["top", "about", "skills", "experience", "projects", "achievement", "contact"];
     const obs = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -109,7 +109,6 @@ export default function Portfolio() {
 
   const sections = [
     { id: "about", label: t.nav.about },
-    { id: "education", label: t.nav.education },
     { id: "skills", label: t.nav.skills },
     { id: "experience", label: t.nav.experience },
     { id: "projects", label: t.nav.projects },
@@ -373,17 +372,60 @@ export default function Portfolio() {
         <div className="h-px bg-zinc-200" />
       </div>
 
-      {/* ABOUT */}
+      {/* ABOUT: tentang + pendidikan digabung */}
       <section id="about" className="mx-auto max-w-5xl scroll-mt-24 px-6 py-16 sm:py-20">
-        <SectionHead index={t.about.index} eyebrow={t.about.eyebrow} title={t.about.title} />
-        <div className="mt-8 grid gap-8 lg:grid-cols-[1.5fr_1fr]">
+        <SectionHead index={t.about.index} eyebrow={t.about.eyebrow} title={t.about.title} desc={t.about.desc} />
+        <div className="mt-8 grid gap-8 lg:grid-cols-[0.9fr_1.4fr] lg:items-start">
           <Reveal delay={80}>
-            <div>
-              <p className="text-[15px] leading-7 text-zinc-600">{t.about.body1}</p>
-              <p className="mt-4 text-[15px] leading-7 text-zinc-600">{t.about.body2}</p>
-              <div className="mt-8 divide-y divide-zinc-200 border-y border-zinc-200">
+            <figure className="overflow-hidden rounded-3xl border border-zinc-200 bg-white lg:sticky lg:top-24">
+              <div className="bg-zinc-100">
+                <Image
+                  src="/profile.png"
+                  alt={`${profile.name} — ${t.about.photoCaption}`}
+                  width={800}
+                  height={880}
+                  className="mx-auto h-auto w-full max-w-sm object-cover object-top"
+                />
+              </div>
+              <figcaption className="flex items-center justify-between gap-3 border-t border-zinc-100 px-5 py-4">
+                <span className="text-sm font-semibold">{t.about.photoCaption}</span>
+                <span className="text-xs text-zinc-500">{t.about.photoNote}</span>
+              </figcaption>
+            </figure>
+          </Reveal>
+          <div>
+            <Reveal delay={100}>
+              <div className="space-y-4">
+                {t.about.intro.map((p) => (
+                  <p key={p.slice(0, 24)} className="text-[15px] leading-7 text-zinc-600">
+                    {p}
+                  </p>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal delay={140}>
+              <div className="mt-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
+                  {t.about.factsTitle}
+                </p>
+                <dl className="mt-4 divide-y divide-zinc-200">
+                  {t.about.rows.map(([k, v]) => (
+                    <div key={k} className="py-3 first:pt-0 last:pb-0">
+                      <dt className="text-xs text-zinc-500">{k}</dt>
+                      <dd className="mt-1 text-sm font-medium leading-6">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+        <div className="mt-8 grid gap-4 lg:grid-cols-2">
+          <Reveal delay={80}>
+            <div className="h-full rounded-2xl border border-zinc-200 bg-white p-6">
+              <div className="divide-y divide-zinc-200">
                 {t.about.points.map((p, i) => (
-                  <div key={p.title} className="flex gap-4 py-4">
+                  <div key={p.title} className="flex gap-4 py-4 first:pt-0 last:pb-0">
                     <span className="font-mono text-xs text-zinc-400">0{i + 1}</span>
                     <div>
                       <p className="text-sm font-semibold">{p.title}</p>
@@ -395,85 +437,27 @@ export default function Portfolio() {
             </div>
           </Reveal>
           <Reveal delay={140}>
-            <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
-                {t.about.cardTitle}
-              </p>
-              <dl className="mt-4 divide-y divide-zinc-200">
-                {t.about.cardRows.map(([k, v]) => (
-                  <div key={k} className="py-3 first:pt-0 last:pb-0">
-                    <dt className="text-xs text-zinc-500">{k}</dt>
-                    <dd className="mt-1 text-sm font-medium leading-6">{v}</dd>
-                  </div>
+            <div className="h-full rounded-2xl bg-zinc-950 p-6 text-white sm:p-7">
+              <div className="flex items-center gap-3">
+                <Image
+                  src={t.about.storyIcon}
+                  alt="Growtopia"
+                  width={28}
+                  height={28}
+                  unoptimized
+                  className="h-7 w-7 rounded-lg"
+                />
+                <p className="text-sm font-bold tracking-tight">{t.about.storyTitle}</p>
+              </div>
+              <div className="mt-4 space-y-3">
+                {t.about.story.map((p) => (
+                  <p key={p.slice(0, 24)} className="text-sm leading-6 text-zinc-300">
+                    {p}
+                  </p>
                 ))}
-              </dl>
+              </div>
             </div>
           </Reveal>
-        </div>
-      </section>
-
-      {/* EDUCATION */}
-      <section id="education" className="border-t border-zinc-200 bg-zinc-50/60">
-        <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
-          <SectionHead index={t.education.index} eyebrow={t.education.eyebrow} title={t.education.title} desc={t.education.desc} />
-          <div className="mt-8 grid gap-8 lg:grid-cols-[0.9fr_1.4fr] lg:items-start">
-            <Reveal delay={80}>
-              <figure className="overflow-hidden rounded-3xl border border-zinc-200 bg-white">
-                <div className="bg-zinc-100">
-                  <Image
-                    src="/profile.png"
-                    alt={`${profile.name} — ${t.education.photoCaption}`}
-                    width={800}
-                    height={820}
-                    className="mx-auto h-auto w-full max-w-sm object-cover object-top"
-                  />
-                </div>
-                <figcaption className="flex items-center justify-between gap-3 border-t border-zinc-100 px-5 py-4">
-                  <span className="text-sm font-semibold">{t.education.photoCaption}</span>
-                  <span className="text-xs text-zinc-500">{t.education.photoNote}</span>
-                </figcaption>
-              </figure>
-            </Reveal>
-            <div>
-              <Reveal delay={120}>
-                <div className="rounded-2xl border border-zinc-200 bg-white p-6">
-                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-zinc-500">
-                    {t.education.statusTitle}
-                  </p>
-                  <dl className="mt-4 divide-y divide-zinc-200">
-                    {t.education.rows.map(([k, v]) => (
-                      <div key={k} className="py-3 first:pt-0 last:pb-0">
-                        <dt className="text-xs text-zinc-500">{k}</dt>
-                        <dd className="mt-1 text-sm font-medium leading-6">{v}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-              </Reveal>
-              <Reveal delay={180}>
-                <div className="mt-4 rounded-2xl border border-zinc-200 bg-white p-6">
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src={t.education.storyIcon}
-                      alt="Growtopia"
-                      width={28}
-                      height={28}
-                      unoptimized
-                      className="h-7 w-7 rounded-lg"
-                    />
-                    <p className="text-sm font-bold tracking-tight">{t.education.storyTitle}</p>
-                  </div>
-                  <div className="mt-4 space-y-3">
-                    {t.education.story.map((p) => (
-                      <p key={p.slice(0, 24)} className="text-sm leading-6 text-zinc-600">
-                        {p}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
-            </div>
-          </div>
         </div>
       </section>
 
