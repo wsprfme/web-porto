@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -8,18 +8,134 @@ const jakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+const SITE_URL = "https://usman.seadrama.net";
+const SITE_NAME = "Usman Ramadhan";
+const SITE_TITLE = "Usman Ramadhan - Fullstack Web Developer Palembang";
+const SITE_DESC =
+  "Usman Ramadhan adalah Fullstack Web Developer dari Palembang, Indonesia. Siswa kelas 3 TKJ SMKN 1 Belitang Madang Raya, Founder Jolink layanan hosting game dan bot, Juara 3 LKS Web Technologies Provinsi Sumatera Selatan 2026.";
+
 export const metadata: Metadata = {
-  title: "Usman Ramadhan - Fullstack Web Developer",
-  description:
-    "Portfolio Usman Ramadhan dari Palembang: Fullstack Web Developer. Membangun SPMB SMKN 1 Belitang Madang Raya, Juara 3 LKS Web Technologies Provinsi Sumatera Selatan 2026, dan Jolink layanan hosting game dan bot.",
-  keywords: ["Usman Ramadhan", "Fullstack Developer", "Palembang", "Jolink", "Next.js", "Portfolio"],
-  authors: [{ name: "Usman Ramadhan" }],
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_TITLE,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESC,
+  keywords: [
+    "Usman Ramadhan",
+    "siapa Usman Ramadhan",
+    "Usman Ramadhan Palembang",
+    "Usman Ramadhan Jolink",
+    "Usman Ramadhan SMKN 1 Belitang Madang Raya",
+    "Fullstack Developer Palembang",
+    "Web Developer Palembang",
+    "Fullstack Web Developer Indonesia",
+    "Jolink",
+    "Portfolio Usman Ramadhan",
+  ],
+  authors: [{ name: "Usman Ramadhan", url: SITE_URL }],
+  creator: "Usman Ramadhan",
+  publisher: "Usman Ramadhan",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
-    title: "Usman Ramadhan - Fullstack Web Developer",
-    description: "Membangun website yang rapi, cepat, dan mudah dipakai. Berbasis Palembang, siap remote.",
     type: "website",
     locale: "id_ID",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESC,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Usman Ramadhan - Fullstack Web Developer Palembang",
+      },
+    ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESC,
+    images: ["/opengraph-image"],
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+  width: "device-width",
+  initialScale: 1,
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
+      name: "Usman Ramadhan",
+      url: SITE_URL,
+      image: `${SITE_URL}/profile.png`,
+      description: SITE_DESC,
+      jobTitle: "Fullstack Web Developer",
+      email: "mailto:usman@jolink.co.id",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Palembang",
+        addressCountry: "ID",
+      },
+      alumniOf: {
+        "@type": "EducationalOrganization",
+        name: "SMKN 1 Belitang Madang Raya",
+      },
+      worksFor: {
+        "@type": "Organization",
+        name: "Jolink",
+        url: "https://jolink.co.id",
+      },
+      award: "Juara 3 LKS Web Technologies Tingkat Provinsi Sumatera Selatan 2026",
+      knowsAbout: [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "PHP",
+        "Node.js",
+        "Go",
+        "Python",
+        "REST API",
+        "MySQL",
+        "Docker",
+        "Linux",
+      ],
+      sameAs: [
+        "https://github.com/wsprfme",
+        "https://jolink.co.id",
+        "https://smkn1bmr.sch.id",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: SITE_NAME,
+      description: SITE_DESC,
+      inLanguage: ["id", "en"],
+      author: { "@id": `${SITE_URL}/#person` },
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -28,6 +144,10 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${jakarta.variable} h-full scroll-smooth antialiased`}>
       <body className="min-h-full bg-white text-zinc-950">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <div id="site-root">{children}</div>
         {/* Printable CV sheet */}
         <div id="print-cv">
